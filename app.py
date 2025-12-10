@@ -17,7 +17,7 @@ def producers():
 @app.route("/join", methods=["GET", "POST"])
 def join():
     # later you can handle form POST here
-    return render_template("join.html") # UI screen
+    return render_template("signup.html") # UI screen
 
 @app.route("/login", methods=["GET", "POST"])
 def login():
