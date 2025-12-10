@@ -1,0 +1,79 @@
+{% extends "base.html" %}
+
+{% block title %}FoodLoop – Regionale Lebensmittelplattform{% endblock %}
+
+{% block content %}
+
+<section class="card" style="display:flex; flex-direction:column; gap:1rem;">
+    <div>
+        <h1 style="font-size:2rem; margin-bottom:0.5rem;">
+            Regionale Lebensmittel direkt vom Produzenten.
+        </h1>
+        <p style="color:#555; max-width:600px;">
+            FoodLoop ist eine deutsche Webplattform, die regionale Lebensmittelproduzenten
+            (Bauernhöfe, Hofläden und Hobbygärtner) direkt mit lokalen Verbrauchern verbindet.
+            Frisch, transparent, ohne Zwischenhändler.
+        </p>
+    </div>
+    <div style="display:flex; flex-wrap:wrap; gap:0.75rem;">
+        <a href="{{ url_for('products') }}" class="btn btn-primary">
+            Jetzt Produkte entdecken
+        </a>
+        <a href="{{ url_for('producers') }}" class="btn btn-secondary">
+            Als Produzent mitmachen
+        </a>
+    </div>
+</section>
+
+<section style="margin-top:2rem;">
+    <h2 class="section-title">So funktioniert’s</h2>
+    <p class="section-sub">In drei einfachen Schritten zu regionalen Lebensmitteln.</p>
+
+    <div class="grid grid-3">
+        <div class="card">
+            <h3>1. Produzenten entdecken</h3>
+            <p>Nutze PLZ-Filter und Kategorien, um regionale Höfe, Hofläden und Hobbygärtner zu finden.</p>
+        </div>
+        <div class="card">
+            <h3>2. Produkte auswählen</h3>
+            <p>Stöbere durch Obst, Gemüse, Eier, Milchprodukte, Fleisch, Getreide und mehr – auf Wunsch nur Bio.</p>
+        </div>
+        <div class="card">
+            <h3>3. Direkt Kontakt aufnehmen</h3>
+            <p>Produzent:in direkt kontaktieren, Abholung oder Lieferung vereinbaren – ganz ohne Zwischenhändler.</p>
+        </div>
+    </div>
+</section>
+
+<section style="margin-top:2rem;">
+    <h2 class="section-title">Demo: Produzenten-Vorschau</h2>
+    <p class="section-sub">Beispiel, wie ein Produkt mit Produzenten-Verknüpfung angezeigt werden könnte.</p>
+
+    <div class="card">
+        {% if demo_product and demo_producer %}
+            <h3>{{ demo_product.name }}</h3>
+            <p><strong>Kategorie:</strong> {{ demo_product.category }}</p>
+            <p><strong>Preis:</strong> {{ "%.2f"|format(demo_product.price) }} €</p>
+            <p><strong>PLZ:</strong> {{ demo_product.zip }}</p>
+            <p><strong>Bio:</strong> {{ "Ja" if demo_product.bio else "Nein" }}</p>
+            <hr>
+            <p><strong>Produzent:</strong> {{ demo_producer.name }} ({{ demo_producer.type }})</p>
+            <p>{{ demo_producer.description }}</p>
+        {% else %}
+            <p>Noch keine Demo-Daten vorhanden.</p>
+        {% endif %}
+    </div>
+</section>
+
+<section style="margin-top:2rem;">
+    <div class="card" style="text-align:center;">
+        <h2 class="section-title">Möchtest du Teil von FoodLoop werden?</h2>
+        <p class="section-sub">
+            Registriere dich als Produzent:in oder Verbraucher:in und hilf mit,
+            regionale Lebensmittel transparenter und fairer zu machen.
+        </p>
+        <a href="{{ url_for('auth') }}" class="btn btn-primary">Jetzt registrieren</a>
+    </div>
+</section>
+
+{% endblock %}
