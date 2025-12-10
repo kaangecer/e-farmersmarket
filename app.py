@@ -4,7 +4,7 @@ app = Flask(__name__)
 
 @app.route("/")
 def home():
-    return render_template("home.html")  # UI screen
+    return render_template("home.html")
 
 @app.route("/products")
 def products():
@@ -17,7 +17,7 @@ def producers():
 @app.route("/join", methods=["GET", "POST"])
 def join():
     # later you can handle form POST here
-    return render_template("join.html")
+    return render_template("join.html") # UI screen
 
 @app.route("/login", methods=["GET", "POST"])
 def login():
