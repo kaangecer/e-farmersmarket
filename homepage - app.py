@@ -125,7 +125,6 @@ def auth():
     mode = request.args.get("mode", "login")
 
     if request.method == "POST":
-        # später: Supabase Auth einbauen
         return redirect(url_for("home"))
 
     return render_template("auth.html", mode=mode)
@@ -133,4 +132,3 @@ def auth():
 
 if __name__ == "__main__":
     app.run(debug=True)
-
