@@ -14,8 +14,18 @@ def products():
 def producers():
     return render_template("producers.html")  # TODO: create
 
-@app.route("/join", methods=["GET", "POST"])
-def join():
+#karte subpage
+@app.route("/maps")
+def maps():
+    return render_template("maps.html")  # TODO: create
+
+#warenkorb subpage
+@app.route("/cart")
+def cart():
+    return render_template("cart.html")  # TODO: create
+
+@app.route("/signup", methods=["GET", "POST"])
+def signup():
     # later you can handle form POST here
     return render_template("signup.html") # UI screen
 

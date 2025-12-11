@@ -1,24 +1,31 @@
-<!doctype html>
-<html lang="en">
-  <head>
-    <meta charset="utf-8">
-    <title>Join e-Farmersmarket</title>
-  </head>
-  <body>
-    <h1>Join e‑Farmersmarket</h1>
-    <p>Create your account to start discovering local farmers and fresh products.</p>
+{% extends "base.html" %}
 
-    <form method="post" action="/join">
-      <label for="name">Name</label>
-      <input id="name" name="name" type="text" required>
+{% block title %}Join!{% endblock %}
 
-      <label for="email">Email</label>
-      <input id="email" name="email" type="email" required>
+{% block content %}
+  <h1>Join FoodLoop</h1>
+  <p>Create your account to start discovering local farmers and fresh products.</p>
 
-      <label for="password">Password</label>
-      <input id="password" name="password" type="password" required>
+  <div class="auth-layout">
+    <form method="post" action="/signup" class="auth-form">
+      <div class="form-row">
+        <label for="name">Name</label>
+        <input id="name" name="name" type="text" required>
+      </div>
 
-      <button type="submit">Join now</button>
+      <div class="form-row">
+        <label for="email">Email</label>
+        <input id="email" name="email" type="email" required>
+      </div>
+
+      <div class="form-row">
+        <label for="password">Password</label>
+        <input id="password" name="password" type="password" required>
+      </div>
+
+      <div class="form-actions">
+        <button type="submit" class="btn btn-primary">Join now</button>
+      </div>
     </form>
-  </body>
-</html>
+  </div>
+{% endblock %}

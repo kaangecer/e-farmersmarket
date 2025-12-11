@@ -1,21 +1,26 @@
-<!doctype html>
-<html lang="en">
-  <head>
-    <meta charset="utf-8">
-    <title>Log in</title>
-  </head>
-  <body>
-    <h1>Log in</h1>
-    <p>Access your e‑Farmersmarket account.</p>
+{% extends "base.html" %}
 
-    <form method="post" action="/login">
-      <label for="email">Email</label>
-      <input id="email" name="email" type="email" required>
+{% block title %}Log in{% endblock %}
 
-      <label for="password">Password</label>
-      <input id="password" name="password" type="password" required>
+{% block content %}
+  <h1>Log in</h1>
 
-      <button type="submit">Log in</button>
+    <div class="auth-layout">
+    <form method="post" action="/login" class="auth-form">
+      <div class="form-row">
+        <label for="email">Email</label>
+        <input id="email" name="email" type="email" required>
+      </div>
+
+      <div class="form-row">
+        <label for="password">Password</label>
+        <input id="password" name="password" type="password" required>
+      </div>
+
+      <div class="form-actions">
+        <button type="submit">Log in</button>
+      </div>
     </form>
-  </body>
-</html>
+  </div>
+  
+{% endblock %}
