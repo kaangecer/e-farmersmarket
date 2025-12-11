@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 {% extends "base.html" %}
 
 {% block title %}Produkte – FoodLoop{% endblock %}
@@ -62,3 +63,69 @@
     </div>
 </section>
 {% endblock %}
+=======
+{% extends "base.html" %}
+
+{% block title %}Produkte – FoodLoop{% endblock %}
+
+{% block content %}
+<section>
+    <h1 class="section-title">Regionale Produkte</h1>
+    <p class="section-sub">
+        Filtere nach Kategorie, PLZ, Bio-Status oder suche direkt nach Produkten.
+    </p>
+
+    <div class="card">
+        <form method="get" class="inline-form">
+            <input type="text" name="q" placeholder="Suche nach Produktname"
+                   value="{{ current_query }}">
+            <input type="text" name="zip" placeholder="PLZ"
+                   value="{{ current_zip }}" style="max-width:120px;">
+            <select name="category">
+                <option value="">Kategorie wählen</option>
+                {% set categories = [
+                    "Obst", "Gemüse", "Eier", "Milchprodukte",
+                    "Fleisch", "Getreide", "Sonstiges"
+                ] %}
+                {% for cat in categories %}
+                    <option value="{{ cat }}"
+                        {% if current_category == cat %}selected{% endif %}>
+                        {{ cat }}
+                    </option>
+                {% endfor %}
+            </select>
+            <label>
+                <input type="checkbox" name="bio"
+                       {% if current_bio %}checked{% endif %}>
+                Nur Bio
+            </label>
+            <button class="btn btn-primary" type="submit">Filtern</button>
+            <a href="{{ url_for('products') }}" class="btn btn-secondary">Zurücksetzen</a>
+        </form>
+    </div>
+
+    <div class="grid">
+        {% if products %}
+            {% for p in products %}
+                <div class="card">
+                    <h3>{{ p.name }}</h3>
+                    <p><strong>Kategorie:</strong> {{ p.category }}</p>
+                    <p><strong>Preis:</strong> {{ "%.2f"|format(p.price) }} €</p>
+                    <p><strong>PLZ:</strong> {{ p.zip }}</p>
+                    <p><strong>Bio:</strong> {{ "Ja" if p.bio else "Nein" }}</p>
+                    <p style="margin-top:0.5rem;">
+                        <a href="{{ url_for('producers') }}?id={{ p.producer_id }}">
+                            Produzent anzeigen
+                        </a>
+                    </p>
+                </div>
+            {% endfor %}
+        {% else %}
+            <div class="card">
+                <p>Keine Produkte gefunden. Passe deine Filter an.</p>
+            </div>
+        {% endif %}
+    </div>
+</section>
+{% endblock %}
+>>>>>>> 12f5d57149d4881480b34b6c42309bda780d51a7
