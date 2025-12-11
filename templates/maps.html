@@ -1,0 +1,62 @@
+{% extends "base.html" %}
+
+{% block title %}Lieferantenkarte – FoodLoop{% endblock %}
+
+{% block content %}
+<main class="map-page">
+    <section class="map-layout">
+        <!-- Linke Spalte: Suche -->
+        <aside class="map-sidebar card">
+            <h2 class="section-title">Lieferanten in deiner Nähe</h2>
+            <p class="section-sub">
+                Entdecke regionale Bauernhöfe, Hofläden und Hobbygärtner.
+            </p>
+
+            <form method="get" class="map-search-form">
+                <label for="zip" class="map-label">Suche</label>
+                <div class="map-input-wrapper">
+                    <input id="zip"
+                           type="text"
+                           name="zip"
+                           placeholder="PLZ eingeben..."
+                           value="{{ current_zip or '' }}">
+                </div>
+                <p class="map-hint">
+                    Gib eine PLZ ein, um zu suchen.
+                </p>
+                <button type="submit" class="btn btn-primary">
+                    Lieferanten finden
+                </button>
+            </form>
+        </aside>
+
+        <!-- Rechte Spalte: Karte / Placeholder -->
+        <section class="map-panel card">
+            <div class="map-panel-inner">
+                <div class="map-icon">
+                    <!-- optional: Icon als SVG oder Font-Icon -->
+                    <span>📍</span>
+                </div>
+                <h2 class="map-title">Interaktive Karte</h2>
+                <p class="map-text">
+                    Für die Kartenansicht wird später ein Map‑Dienst (z.B. Mapbox) eingebunden.
+                    Nutze die linke Seite, um Lieferanten nach PLZ zu filtern.
+                </p>
+
+                <div class="map-result-card">
+                    <p class="map-result-label">Gefundene Lieferanten:</p>
+                    <p class="map-result-number">
+                        {{ producers|length if producers is defined else 0 }}
+                    </p>
+                </div>
+
+                <!-- Später hier die echte Map einbinden -->
+                <div id="map"
+                     class="map-placeholder">
+                    Maps
+                </div>
+            </div>
+        </section>
+    </section>
+</main>
+{% endblock %}
