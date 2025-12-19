@@ -18,16 +18,29 @@ nav_order: 1
 
 ## The problem
 
-[Describe which problem your application tackles and why it is relevant.]
+Problem Consumer:
+- markets are limited to specific times and locations, not accessible if one is not physically there
+- pricing, availability, and product information are often unclear
+- regional, organic, fresh foods
+
+Problem Farmers:
+- rely heavily on word of mouth, local markets
+- decentralized platform for management
+- selling directly is time-intensive for farmers
 
 ## Our solution
 
-[Describe why and how your app solves the stated problem. Don't over-promise: the description should match what your app actually delivers.]
+- discover nearby producers via map view
+- chat directly with farmers for questions
+- preorder or pick up/deliver products
+- built-in marketing
+- business analytics (revenue, growth, sales, customers feedback)
 
 ## Target user
 
-[Scope your target user(s), e.g., with the help of personas.]
-
+- everyone who does their own grocery shopping (adults)
+- farmers wanting to increase their reach
+- 
 ## Customer journey
 
 [Illustrate the customer journey, from the app's entry point to a completed task. You might want to show the customer journey as (schematic) screen flows.]
