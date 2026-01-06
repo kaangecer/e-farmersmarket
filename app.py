@@ -1,5 +1,7 @@
 from flask import Flask, render_template
 
+from forms.forms import LoginForm
+
 app = Flask(__name__)
 
 @app.route("/")
@@ -31,7 +33,10 @@ def signup():
 
 @app.route("/login", methods=["GET", "POST"])
 def login():
-    return render_template("login.html")  # UI screen
+    form = LoginForm()
+    if form.validate_on_submit():
+        # handle login with form.username.data, form.password.data
+        return render_template("login.html")  # UI screen
 
 if __name__ == "__main__":
     app.run(debug=True)
