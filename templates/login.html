@@ -1,29 +1,27 @@
 {% extends "base.html" %}
 
+{% block title %}Login{% endblock %}
+
 {% block content %}
-<div class="container mt-5">
-  <h2 class="mb-4">Login</h2>
+  <h1>Login</h1>
 
-  <form method="POST" action="{{ url_for('login') }}">
-    {{ form.hidden_tag() }}
+  <div class="auth-layout">
+    <form method="POST" action="{{ url_for('login') }}" class="auth-form">
+      {{ form.hidden_tag() }}
 
-    <div class="mb-3">
-      {{ form.username.label(class_="form-label") }}
-      {{ form.username(class_="form-control", placeholder="Benutzername") }}
-      {% for error in form.username.errors %}
-        <div class="text-danger small">{{ error }}</div>
-      {% endfor %}
-    </div>
+      <div class="form-row">
+        {{ form.username.label }}
+        {{ form.username(class_="form-control", placeholder="Benutzername") }}
+      </div>
 
-    <div class="mb-3">
-      {{ form.password.label(class_="form-label") }}
-      {{ form.password(class_="form-control", placeholder="Passwort") }}
-      {% for error in form.password.errors %}
-        <div class="text-danger small">{{ error }}</div>
-      {% endfor %}
-    </div>
+      <div class="form-row">
+        {{ form.password.label }}
+        {{ form.password(class_="form-control", placeholder="Passwort") }}
+      </div>
 
-    {{ form.submit(class_="btn btn-primary") }}
-  </form>
-</div>
+      <div class="form-actions">
+        {{ form.submit(class_="btn btn-primary") }}
+      </div>
+    </form>
+  </div>
 {% endblock %}
