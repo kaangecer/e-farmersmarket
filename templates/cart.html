@@ -1,12 +1,58 @@
 {% extends "base.html" %}
 
-{% block title %}Platzhalter – FoodLoop{% endblock %}
+{% block title %}Cart – FoodLoop{% endblock %}
 
 {% block content %}
-<section class="section">
-    <h1 class="section-title">Placeholder</h1>
-    <p class="section-sub">
-        Der Inhalt dieser Seite ist aktuell in Arbeit.
-    </p>
-</section>
+  <h1>Your cart</h1>
+
+  <div class="cart-layout">
+    <!-- LEFT: customer form -->
+    <div class="cart-form-column">
+      <h2>Customer details</h2>
+      <form method="POST" action="{{ url_for('cart') }}" class="auth-form">
+        {{ form.hidden_tag() }}
+
+        <div class="form-row">
+          {{ form.full_name.label }}
+          {{ form.full_name(class_="form-control") }}
+        </div>
+
+        <div class="form-row">
+          {{ form.address.label }}
+          {{ form.address(class_="form-control") }}
+        </div>
+
+        <div class="form-row">
+          {{ form.city.label }}
+          {{ form.city(class_="form-control") }}
+        </div>
+
+        <div class="form-row">
+          {{ form.zip_code.label }}
+          {{ form.zip_code(class_="form-control") }}
+        </div>
+
+        <div class="form-row">
+          {{ form.email.label }}
+          {{ form.email(class_="form-control") }}
+        </div>
+
+        <div class="form-row">
+          {{ form.payment_method.label }}
+          {{ form.payment_method(class_="form-select") }}
+        </div>
+
+        <div class="form-actions">
+          {{ form.submit(class_="btn btn-primary") }}
+        </div>
+      </form>
+    </div>
+
+    <!-- RIGHT: order overview -->
+    <aside class="cart-summary-column">
+      <h2>Order Overview</h2>
+      <p>Products, quantities and prices will be listed here.</p>
+      <p><strong>Total:</strong> €0,00</p>
+    </aside>
+  </div>
 {% endblock %}

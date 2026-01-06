@@ -1,5 +1,5 @@
 from flask import Flask, render_template
-from forms.forms import LoginForm, SignupForm
+from forms.forms import LoginForm, SignupForm, CartForm
 
 app = Flask(__name__)
 app.config["SECRET_KEY"] = "dev-secret-change-me"
@@ -21,10 +21,18 @@ def producers():
 def maps():
     return render_template("maps.html") 
 
-#warenkorb subpage
-@app.route("/cart")
+@app.route("/cart", methods=["GET", "POST"])
 def cart():
-    return render_template("cart.html")
+    form = CartForm()
+    if form.validate_on_submit():
+        full_name = form.full_name.data
+        address = form.address.data
+        city = form.city.data
+        zip_code = form.zip_code.data
+        email = form.email.data
+        payment_method = form.payment_method.data
+        pass
+    return render_template("cart.html", form=form)
 
 @app.route("/signup", methods=["GET", "POST"])
 def signup():

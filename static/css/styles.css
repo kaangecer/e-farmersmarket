@@ -221,3 +221,20 @@ footer {
     max-width: 150px;
 }
 
+.cart-layout {
+  display: flex;
+  gap: 2rem;
+  align-items: flex-start;
+}
+
+.cart-form-column {
+  flex: 2;
+}
+
+.cart-summary-column {
+  flex: 1;
+  background-color: #f5f5f5;
+  padding: 1.5rem;
+  border-radius: 8px;
+}
+
