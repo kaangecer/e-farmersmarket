@@ -3,6 +3,7 @@ from flask import Flask, render_template
 from forms.forms import LoginForm
 
 app = Flask(__name__)
+app.config["SECRET_KEY"] = "dev-secret-change-me"
 
 @app.route("/")
 def home():
@@ -35,8 +36,10 @@ def signup():
 def login():
     form = LoginForm()
     if form.validate_on_submit():
-        # handle login with form.username.data, form.password.data
-        return render_template("login.html")  # UI screen
+        username = form.username.data
+        password = form.password.data
+        pass
+    return render_template("login.html", form=form)  # UI screen
 
 if __name__ == "__main__":
     app.run(debug=True)
