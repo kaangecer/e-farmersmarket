@@ -17,4 +17,4 @@ nav_order: 2
 {: toc }
 </details>
 
-[Visualize and describe the data model(s) of your application. This description should match the actual implementation.]
+![Entity Relationship Diagram](https://github.com/user-attachments/assets/6fa91e08-bc42-4d05-ae26-edac2c3ebb16)
