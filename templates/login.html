@@ -1,23 +1,61 @@
 {% extends "base.html" %}
-
 {% block title %}Login{% endblock %}
 
 {% block content %}
   <h1>Login</h1>
 
   <div class="auth-layout">
-    <form method="POST" action="{{ url_for('login') }}" class="auth-form">
+    <form method="POST"
+          action="{{ url_for('login', step=step, email=email) }}"
+          class="auth-form">
       {{ form.hidden_tag() }}
 
-      <div class="form-row">
-        {{ form.username.label }}
-        {{ form.username(class_="form-control", placeholder="Benutzername") }}
-      </div>
+      {% if step == 'email' %}
+        <div class="form-row">
+          {{ form.email.label }}
+          {{ form.email(class_="form-control", placeholder="E-Mail-Adresse") }}
+          {% for error in form.email.errors %}
+            <div class="text-danger small">{{ error }}</div>
+          {% endfor %}
+        </div>
 
-      <div class="form-row">
-        {{ form.password.label }}
-        {{ form.password(class_="form-control", placeholder="Passwort") }}
-      </div>
+      {% elif step == 'password' %}
+        <p>Für: <strong>{{ email }}</strong></p>
+        <div class="form-row">
+          {{ form.password.label }}
+          {{ form.password(class_="form-control", placeholder="Passwort") }}
+          {% for error in form.password.errors %}
+            <div class="text-danger small">{{ error }}</div>
+          {% endfor %}
+        </div>
+
+      {% elif step == 'signup' %}
+        <p>Kein Konto gefunden für <strong>{{ email }}</strong>. Bitte registrieren.</p>
+
+        <div class="form-row">
+          {{ form.name.label }}
+          {{ form.name(class_="form-control", placeholder="Vollständiger Name") }}
+          {% for error in form.name.errors %}
+            <div class="text-danger small">{{ error }}</div>
+          {% endfor %}
+        </div>
+
+        <div class="form-row">
+          {{ form.username.label }}
+          {{ form.username(class_="form-control", placeholder="Benutzername") }}
+          {% for error in form.username.errors %}
+            <div class="text-danger small">{{ error }}</div>
+          {% endfor %}
+        </div>
+
+        <div class="form-row">
+          {{ form.password.label }}
+          {{ form.password(class_="form-control", placeholder="Passwort") }}
+          {% for error in form.password.errors %}
+            <div class="text-danger small">{{ error }}</div>
+          {% endfor %}
+        </div>
+      {% endif %}
 
       <div class="form-actions">
         {{ form.submit(class_="btn btn-primary") }}
