@@ -33,9 +33,17 @@
         <p>Kein Konto gefunden für <strong>{{ email }}</strong>. Bitte registrieren.</p>
 
         <div class="form-row">
-          {{ form.name.label }}
-          {{ form.name(class_="form-control", placeholder="Vollständiger Name") }}
-          {% for error in form.name.errors %}
+          {{ form.first_name.label }}
+          {{ form.first_name(class_="form-control", placeholder="Vorname") }}
+          {% for error in form.first_name.errors %}
+            <div class="text-danger small">{{ error }}</div>
+          {% endfor %}
+        </div>
+
+        <div class="form-row">
+          {{ form.last_name.label }}
+          {{ form.last_name(class_="form-control", placeholder="Nachname") }}
+          {% for error in form.last_name.errors %}
             <div class="text-danger small">{{ error }}</div>
           {% endfor %}
         </div>
@@ -52,6 +60,14 @@
           {{ form.password.label }}
           {{ form.password(class_="form-control", placeholder="Passwort") }}
           {% for error in form.password.errors %}
+            <div class="text-danger small">{{ error }}</div>
+          {% endfor %}
+        </div>
+
+        <div class="form-row">
+          {{ form.password_confirm.label }}
+          {{ form.password_confirm(class_="form-control", placeholder="Passwort bestätigen") }}
+          {% for error in form.password_confirm.errors %}
             <div class="text-danger small">{{ error }}</div>
           {% endfor %}
         </div>
