@@ -19,7 +19,12 @@
         <a href="{{ url_for('producers') }}">Produzenten</a>
         <a href="{{ url_for('maps') }}">Karte</a>
         <a href="{{ url_for('cart') }}">Warenkorb</a>
-        <a href="{{ url_for('login') }}">Login</a>
+
+        {% if session.get('user_id') %}
+            <a href="{{ url_for('account') }}">Mein Konto</a>
+        {% else %}
+            <a href="{{ url_for('login') }}">Login</a>
+        {% endif %}
         <a href="{{ url_for('business') }}">Join as a Business</a>
     </nav>
 </header>
