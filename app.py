@@ -79,16 +79,19 @@ def login():
     
     if step == "signup":
         form = SignupForm()
-        if request.method == "GET" and email and not form.name.data:
-            # we keep email outside the form, but could add a hidden field if you want
-            pass
         if form.validate_on_submit():
             first_name = form.first_name.data
             last_name = form.last_name.data
             username = form.username.data
             password = form.password.data
             # TODO: create User row, hash password, commit
-            user = User(email=email, password=password, role="CUSTOMER")
+            user = User(
+                email=email,
+                password_hash=generate_password_hash(password),
+                first_name=first_name,
+                last_name=last_name,
+                role="CUSTOMER"
+            )
             db.session.add(user)
             db.session.commit()
             return redirect(url_for("home"))
