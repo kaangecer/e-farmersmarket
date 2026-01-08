@@ -63,7 +63,9 @@ def login():
             password = form.password.data
             user = User.query.filter_by(email=email).first()
             # TODO: check password properly (hash compare)
-            if user and password == user.password:  # placeholder!
+            if user and check_password_hash(user.password_hash, password):  # placeholder!
+                session["user_id"] = user.user_id  # log the user in   
+                session["user_email"] = user.email
                 return redirect(url_for("home"))
             else:
                 form.password.errors.append("Falsches Passwort.")
