@@ -61,6 +61,7 @@ class ProducerProfile(db.Model):
     created_at = db.Column(db.DateTime, default=datetime.utcnow, nullable=False)
 
     user = db.relationship("User", back_populates="producer_profile")
+    products = db.relationship("Product", back_populates="producer", lazy="dynamic")
     address = db.relationship("Address", back_populates="producers")
 
 
@@ -71,6 +72,7 @@ class Category(db.Model):
     name = db.Column(db.String(100), nullable=False, unique=True)
 
     products = db.relationship("Product", back_populates="category", lazy="dynamic")
+
 class Product(db.Model):
     __tablename__ = "product"
 
