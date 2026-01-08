@@ -115,3 +115,30 @@ class CartItem(db.Model):
     product = db.relationship("Product", back_populates="cart_items")
     producer = db.relationship("ProducerProfile")
 
+class Order(db.Model):
+    __tablename__ = "order"
+
+    order_id = db.Column(db.Integer, primary_key=True)
+    customer_id = db.Column(db.Integer, db.ForeignKey("customer_profile.customer_id"), nullable=False)
+    created_at = db.Column(db.DateTime, default=datetime.utcnow, nullable=False)
+    status = db.Column(db.String(20), nullable=False, default="pending")
+    total_amount = db.Column(db.Numeric(10, 2), nullable=False)
+
+    customer = db.relationship("CustomerProfile", backref=db.backref("orders", lazy="dynamic"))
+    items = db.relationship("OrderItem", back_populates="order", cascade="all, delete-orphan", lazy="dynamic")
+
+
+class OrderItem(db.Model):
+    __tablename__ = "order_item"
+
+    order_item_id = db.Column(db.Integer, primary_key=True)
+    order_id = db.Column(db.Integer, db.ForeignKey("order.order_id"), nullable=False)
+    product_id = db.Column(db.Integer, db.ForeignKey("product.product_id"), nullable=False)
+    producer_id = db.Column(db.Integer, db.ForeignKey("producer_profile.producer_id"), nullable=False)
+    quantity = db.Column(db.Integer, nullable=False)
+    unit_price = db.Column(db.Numeric(10, 2), nullable=False)
+    line_total = db.Column(db.Numeric(10, 2), nullable=False)
+
+    order = db.relationship("Order", back_populates="items")
+    product = db.relationship("Product", back_populates="order_items")
+    producer = db.relationship("ProducerProfile")
