@@ -29,7 +29,14 @@ def maps():
 
 @app.route("/cart", methods=["GET", "POST"])
 def cart():
+    if not session.get("user_id"):
+        return redirect(url_for("login"))
+    
     form = CartForm()
+    
+    if request.method == "GET":
+        form.email.data = session.get("user_email")
+    
     if form.validate_on_submit():
         email = form.email.data
         first_name = form.first_name.data
