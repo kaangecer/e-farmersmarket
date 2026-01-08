@@ -89,3 +89,29 @@ class Product(db.Model):
     cart_items = db.relationship("CartItem", back_populates="product", lazy="dynamic")
     order_items = db.relationship("OrderItem", back_populates="product", lazy="dynamic")
 
+
+class Cart(db.Model):
+    __tablename__ = "cart"
+
+    cart_id = db.Column(db.Integer, primary_key=True)
+    customer_id = db.Column(db.Integer, db.ForeignKey("customer_profile.customer_id"), nullable=False)
+    created_at = db.Column(db.DateTime, default=datetime.utcnow, nullable=False)
+    updated_at = db.Column(db.DateTime, default=datetime.utcnow, nullable=False)
+
+    customer = db.relationship("CustomerProfile", backref=db.backref("carts", lazy="dynamic"))
+    items = db.relationship("CartItem", back_populates="cart", cascade="all, delete-orphan", lazy="dynamic")
+
+
+class CartItem(db.Model):
+    __tablename__ = "cart_item"
+
+    cart_item_id = db.Column(db.Integer, primary_key=True)
+    cart_id = db.Column(db.Integer, db.ForeignKey("cart.cart_id"), nullable=False)
+    product_id = db.Column(db.Integer, db.ForeignKey("product.product_id"), nullable=False)
+    producer_id = db.Column(db.Integer, db.ForeignKey("producer_profile.producer_id"), nullable=False)
+    quantity = db.Column(db.Integer, nullable=False)
+
+    cart = db.relationship("Cart", back_populates="items")
+    product = db.relationship("Product", back_populates="cart_items")
+    producer = db.relationship("ProducerProfile")
+
