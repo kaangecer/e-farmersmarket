@@ -62,3 +62,30 @@ class ProducerProfile(db.Model):
 
     user = db.relationship("User", back_populates="producer_profile")
     address = db.relationship("Address", back_populates="producers")
+
+
+class Category(db.Model):
+    __tablename__ = "category"
+
+    category_id = db.Column(db.Integer, primary_key=True)
+    name = db.Column(db.String(100), nullable=False, unique=True)
+
+    products = db.relationship("Product", back_populates="category", lazy="dynamic")
+class Product(db.Model):
+    __tablename__ = "product"
+
+    product_id = db.Column(db.Integer, primary_key=True)
+    producer_id = db.Column(db.Integer, db.ForeignKey("producer_profile.producer_id"), nullable=False)
+    category_id = db.Column(db.Integer, db.ForeignKey("category.category_id"), nullable=False)
+    name = db.Column(db.String(255), nullable=False)
+    description = db.Column(db.Text)
+    price = db.Column(db.Numeric(10, 2), nullable=False)
+    is_active = db.Column(db.Boolean, default=True, nullable=False)
+    created_at = db.Column(db.DateTime, default=datetime.utcnow, nullable=False)
+
+    producer = db.relationship("ProducerProfile", back_populates="products")
+    category = db.relationship("Category", back_populates="products")
+
+    cart_items = db.relationship("CartItem", back_populates="product", lazy="dynamic")
+    order_items = db.relationship("OrderItem", back_populates="product", lazy="dynamic")
+
