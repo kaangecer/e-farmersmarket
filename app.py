@@ -29,13 +29,13 @@ def maps():
 def cart():
     form = CartForm()
     if form.validate_on_submit():
-        full_name = form.full_name.data
+        email = form.email.data
+        first_name = form.first_name.data
+        last_name = form.last_name.data
         address = form.address.data
         city = form.city.data
         zip_code = form.zip_code.data
-        email = form.email.data
         payment_method = form.payment_method.data
-        pass
     return render_template("cart.html", form=form)
 
 @app.route("/login", methods=["GET", "POST"])
