@@ -1,6 +1,8 @@
 from flask import Flask, redirect, render_template, request, session, url_for
 from forms import EmailOnlyLoginForm , PasswordOnlyLoginForm, SignupForm, CartForm
 from models import User, db
+from werkzeug.security import generate_password_hash, check_password_hash
+from flask import session, redirect, url_for, render_template
 
 
 app = Flask(__name__)
