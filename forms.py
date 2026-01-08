@@ -31,6 +31,11 @@ class SignupForm(FlaskForm):
         "Passwort",
         validators=[InputRequired("Bitte Passwort eingeben."), Length(min=6, message="Passwort muss mindestens 6 Zeichen lang sein.")]
     )
+    password_confirm = PasswordField(
+        "Passwort bestätigen",
+        validators=[InputRequired("Bitte Passwort bestätigen."), 
+                    EqualTo("password", message="Passwörter stimmen nicht überein.")],
+    )
     submit = SubmitField("Jetzt beitreten")
 
 class CartForm(FlaskForm):
