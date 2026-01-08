@@ -88,6 +88,18 @@ def login():
         form = SignupForm()
         return render_template("login.html", step="signup", email=email, form=form)
 
+@app.route("/account")
+def account():
+    if not session.get("user_id"):
+        return redirect(url_for("login"))
+    return render_template("account.html")
+
+@app.route("/logout", methods=["POST"])
+def logout():
+    session.pop("user_id", None)
+    session.pop("user_email", None)
+    return redirect(url_for("home"))
+
 @app.route("/business")
 def business():
     return render_template("business.html")
