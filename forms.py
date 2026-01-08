@@ -17,10 +17,12 @@ class PasswordOnlyLoginForm(FlaskForm):
     submit = SubmitField("Login")
 
 class SignupForm(FlaskForm):
-    name = StringField(
-        "Name",
-        validators=[InputRequired("Bitte Name eingeben."), Length(min=2, max=50, message="Name muss zwischen 2 und 50 Zeichen lang sein.")]
-    )
+    first_name = StringField(
+        "Vorname", validators=[InputRequired(), Length(min=2, max=50)]
+        )
+    last_name = StringField(
+        "Nachname", validators=[InputRequired(), Length(min=2, max=50)]
+        )
     username = StringField(
         "Benutzername",
         validators=[InputRequired("Bitte Benutzernamen eingeben."), Length(min=3, max=25, message="Benutzername muss zwischen 3 und 25 Zeichen lang sein.")]
