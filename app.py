@@ -1,4 +1,4 @@
-from flask import Flask, redirect, render_template, request, url_for
+from flask import Flask, redirect, render_template, request, session, url_for
 from forms import EmailOnlyLoginForm , PasswordOnlyLoginForm, SignupForm, CartForm
 from models import User, db
 
@@ -56,9 +56,6 @@ def login():
     
     if step == "password":
         form = PasswordOnlyLoginForm()
-        if request.method == "GET" and email:
-            # could show email read-only in template
-            pass
         if form.validate_on_submit():
             password = form.password.data
             user = User.query.filter_by(email=email).first()
@@ -77,7 +74,8 @@ def login():
             # we keep email outside the form, but could add a hidden field if you want
             pass
         if form.validate_on_submit():
-            name = form.name.data
+            first_name = form.first_name.data
+            last_name = form.last_name.data
             username = form.username.data
             password = form.password.data
             # TODO: create User row, hash password, commit
