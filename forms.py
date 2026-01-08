@@ -37,7 +37,12 @@ class CartForm(FlaskForm):
     full_name = StringField("Full name", validators=[InputRequired(), Length(min=2, max=50)])
     address = StringField("Address", validators=[InputRequired(), Length(min=5, max=200)])
     city = StringField("City", validators=[InputRequired(), Length(min=2, max=50)])
-    zip_code = StringField("ZIP code", validators=[InputRequired(), Length(min=4, max=10)])
+    zip_code = StringField("ZIP code", 
+                           validators=[
+                               InputRequired(),
+                               Length(min=4, max=10),
+                               Regexp(r"^[0-9]+$", message="Bitte nur Ziffern eingeben.")
+                           ])
     email = StringField("Email", validators=[InputRequired(), Email()])
     payment_method = SelectField(
         "Payment method",
