@@ -1,14 +1,15 @@
 # models.py
 from datetime import datetime
 from flask_sqlalchemy import SQLAlchemy
+from flask_login import UserMixin
 
 db = SQLAlchemy()
 
 
-class User(db.Model):
+class User(db.Model, UserMixin):
     __tablename__ = "user"
 
-    user_id = db.Column(db.Integer, primary_key=True)
+    id = db.Column(db.Integer, primary_key=True)
     email = db.Column(db.String(255), unique=True, nullable=False)
     password_hash = db.Column(db.String(255), nullable=False)
     first_name = db.Column(db.String(100), nullable=False)
@@ -38,7 +39,7 @@ class CustomerProfile(db.Model):
     __tablename__ = "customer_profile"
 
     customer_id = db.Column(db.Integer, primary_key=True)
-    user_id = db.Column(db.Integer, db.ForeignKey("user.user_id"), nullable=False, unique=True)
+    user_id = db.Column(db.Integer, db.ForeignKey("user.id"), nullable=False, unique=True)
     address_id = db.Column(db.Integer, db.ForeignKey("address.address_id"), nullable=True)
     created_at = db.Column(db.DateTime, default=datetime.utcnow, nullable=False)
 
@@ -50,7 +51,7 @@ class ProducerProfile(db.Model):
     __tablename__ = "producer_profile"
 
     producer_id = db.Column(db.Integer, primary_key=True)
-    user_id = db.Column(db.Integer, db.ForeignKey("user.user_id"), nullable=False, unique=True)
+    user_id = db.Column(db.Integer, db.ForeignKey("user.id"), nullable=False, unique=True)
     address_id = db.Column(db.Integer, db.ForeignKey("address.address_id"), nullable=True)
     display_name = db.Column(db.String(255), nullable=False)
     legal_name = db.Column(db.String(255), nullable=True)
