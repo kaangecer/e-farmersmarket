@@ -2,11 +2,43 @@
 {% block title %}Account{% endblock %}
 
 {% block content %}
+  <h1>Mein Konto</h1>
 
-    <h1>Mein Konto</h1>
-    <p>Eingeloggt als: {{ session["user_email"] }}</p>
+  <p>Eingeloggt als: {{ session["user_email"] }}</p>
 
-    <form action="{{ url_for('logout') }}" method="post">
-        <button type="submit">Logout</button>
-    </form>
+  <section class="account-section">
+    <h2>Persönliche Daten</h2>
+    <p><strong>Name:</strong> {{ user.first_name }} {{ user.last_name }}</p>
+    <p><strong>E-Mail:</strong> {{ user.email }}</p>
+    <p><strong>Konto angelegt am:</strong> {{ user.created_at.strftime("%d.%m.%Y") }}</p>
+  </section>
+
+  <section class="account-section">
+    <h2>Standard-Lieferadresse</h2>
+    <p>{{ user.address }}</p>
+    <p>{{ user.zip_code }} {{ user.city }}</p>
+    <a href="{{ url_for('account_settings') }}">Adresse bearbeiten</a>
+  </section>
+
+  <section class="account-section">
+    <h2>Bestellungen</h2>
+    {% if orders %}
+      <ul>
+        {% for order in orders %}
+          <li>
+            <strong>Bestellung #{{ order.id }}</strong> –
+            {{ order.created_at.strftime("%d.%m.%Y") }} –
+            Gesamt: {{ order.total }} €
+            <a href="{{ url_for('order_detail', order_id=order.id) }}">Details</a>
+          </li>
+        {% endfor %}
+      </ul>
+    {% else %}
+      <p>Du hast noch keine Bestellungen.</p>
+    {% endif %}
+  </section>
+
+  <form action="{{ url_for('logout') }}" method="post">
+    <button type="submit">Logout</button>
+  </form>
 {% endblock %}
