@@ -20,7 +20,7 @@
         <a href="{{ url_for('maps') }}">Karte</a>
         <a href="{{ url_for('cart') }}">Warenkorb</a>
 
-        {% if session.get('user_id') %}
+        {% if current_user.is_authenticated %}
             <a href="{{ url_for('account') }}">Mein Konto</a>
         {% else %}
             <a href="{{ url_for('login') }}">Login</a>
