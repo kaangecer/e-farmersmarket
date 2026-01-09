@@ -1,15 +1,24 @@
-from flask import Flask, redirect, render_template, request, session, url_for
+from flask import Flask, redirect, render_template, request, url_for
 from forms import EmailOnlyLoginForm , PasswordOnlyLoginForm, SignupForm, CartForm
-from models import User, db
+from models import Order, User, db
 from werkzeug.security import generate_password_hash, check_password_hash
-from flask import session, redirect, url_for, render_template
+from flask_login import LoginManager, login_user, login_required, logout_user, current_user
 
 
 app = Flask(__name__)
+login_manager = LoginManager(app)
+login_manager.login_view = "login"
+
 app.config["SECRET_KEY"] = "dev-secret-change-me"
 app.config["SQLALCHEMY_DATABASE_URI"] = "sqlite:///farmersmarket.db"
 app.config["SQLALCHEMY_TRACK_MODIFICATIONS"] = False
+print("DB URI:", app.config["SQLALCHEMY_DATABASE_URI"])
+
 db.init_app(app)
+
+@login_manager.user_loader
+def load_user(user_id):
+    return User.query.get(int(user_id))
 
 @app.route("/")
 def home():
@@ -29,14 +38,15 @@ def maps():
 
 @app.route("/cart", methods=["GET", "POST"])
 def cart():
-    if not session.get("user_id"):
-        return redirect(url_for("login"))
-    
     form = CartForm()
     
-    if request.method == "GET":
-        form.email.data = session.get("user_email")
-    
+    user_logged_in = current_user.is_authenticated
+
+    if request.method == "GET" and user_logged_in:
+        form.email.data = current_user.email
+        form.first_name.data = current_user.first_name
+        form.last_name.data = current_user.last_name
+
     if form.validate_on_submit():
         email = form.email.data
         first_name = form.first_name.data
@@ -45,10 +55,11 @@ def cart():
         city = form.city.data
         zip_code = form.zip_code.data
         payment_method = form.payment_method.data
-    return render_template("cart.html", form=form)
+    return render_template("cart.html", form=form, user_logged_in=user_logged_in)
 
 @app.route("/login", methods=["GET", "POST"])
 def login():
+
     step = request.args.get("step", "email")  # "email", "password", or "signup"
     email = request.args.get("email", "").strip().lower()
 
@@ -68,10 +79,8 @@ def login():
         if form.validate_on_submit():
             password = form.password.data
             user = User.query.filter_by(email=email).first()
-            # TODO: check password properly (hash compare)
             if user and check_password_hash(user.password_hash, password):  # placeholder!
-                session["user_id"] = user.user_id  # log the user in   
-                session["user_email"] = user.email
+                login_user(user)
                 return redirect(url_for("home"))
             else:
                 form.password.errors.append("Falsches Passwort.")
@@ -84,7 +93,7 @@ def login():
             last_name = form.last_name.data
             username = form.username.data
             password = form.password.data
-            # TODO: create User row, hash password, commit
+
             user = User(
                 email=email,
                 password_hash=generate_password_hash(password),
@@ -94,6 +103,7 @@ def login():
             )
             db.session.add(user)
             db.session.commit()
+            login_user(user)
             return redirect(url_for("home"))
         return render_template("login.html", step="signup", email=email, form=form)
     else:  # treat anything else as signup
@@ -101,15 +111,18 @@ def login():
         return render_template("login.html", step="signup", email=email, form=form)
 
 @app.route("/account")
+@login_required
 def account():
-    if not session.get("user_id"):
-        return redirect(url_for("login"))
-    return render_template("account.html")
+    if current_user.customer_profile:
+        customer_profile = current_user.customer_profile.orders.all()
+    else:
+        customer_profile = []
+    return render_template("account.html", user=current_user, orders=customer_profile)
 
 @app.route("/logout", methods=["POST"])
+@login_required
 def logout():
-    session.pop("user_id", None)
-    session.pop("user_email", None)
+    logout_user()
     return redirect(url_for("home"))
 
 @app.route("/business")
