@@ -1,6 +1,5 @@
-from app import app
-from models import db
-import models  # ensure models are imported
+from app import app, db
 
 with app.app_context():
     db.create_all()
+    print("Datenbanktabellen wurden erstellt.")
