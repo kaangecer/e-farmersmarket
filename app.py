@@ -84,7 +84,7 @@ def login():
             user = User.query.filter_by(email=email).first()
             if user and check_password_hash(user.password_hash, password):  # placeholder!
                 login_user(user)
-                return redirect(url_for("home"))
+                return redirect(url_for("home")) #when logged in, go to home
             else:
                 form.password.errors.append("Falsches Passwort.")
         return render_template("login.html", step="password", email=email, form=form)
