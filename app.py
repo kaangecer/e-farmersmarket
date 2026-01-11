@@ -1,6 +1,6 @@
 from flask import Flask, redirect, render_template, request, url_for
 from forms import EmailOnlyLoginForm , PasswordOnlyLoginForm, SignupForm, CartForm
-from models import Order, User, db
+from models import Category, Order, Product, User, db
 from werkzeug.security import generate_password_hash, check_password_hash
 from flask_login import LoginManager, login_user, login_required, logout_user, current_user
 
@@ -26,11 +26,14 @@ def home():
 
 @app.route("/products")
 def products():
-    return render_template("products.html")
+    products = Product.query.filter_by(is_active=True).all()
+    categories = Category.query.all()
+    return render_template("products.html", products=products, categories=categories)
 
 @app.route("/producers")
 def producers():
-    return render_template("producers.html") 
+    producers = User.query.filter_by(role="PRODUCER").all()
+    return render_template("producers.html", producers=producers)
 
 @app.route("/maps")
 def maps():
