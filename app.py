@@ -128,7 +128,7 @@ def logout():
     logout_user()
     return redirect(url_for("home"))
 
-@app.route("/business")
+@app.route("/business", methods=["GET", "POST"])
 def business():
     step = request.args.get("step", "email")
     email = request.args.get("email", "").strip().lower()
