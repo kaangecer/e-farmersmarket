@@ -1,0 +1,80 @@
+{% extends "base.html" %}
+{% block title %}Business-Dashboard{% endblock %}
+
+{% block content %}
+  <h1>Mein Betrieb</h1>
+
+  <p>Eingeloggt als: {{ current_user.email }}</p>
+
+  {# PRODUZENTEN-PROFIL #}
+  <section class="account-section">
+    <h2>Profil</h2>
+    <p><strong>Öffentlicher Name:</strong> {{ producer.display_name }}</p>
+    <p><strong>Rechtlicher Name:</strong>
+      {{ producer.legal_name or "nicht hinterlegt" }}
+    </p>
+    <p><strong>Kontakt-E-Mail:</strong> {{ producer.contact_email }}</p>
+    <p><strong>Telefon:</strong> {{ producer.contact_phone or "nicht hinterlegt" }}</p>
+    <p><strong>Status:</strong> {{ producer.verification_status }}</p>
+    <p><strong>Profil angelegt am:</strong>
+      {{ producer.created_at.strftime("%d.%m.%Y") }}
+    </p>
+    <a href="{{ url_for('edit_producer_profile') }}">Profil bearbeiten</a>
+  </section>
+
+  {# BETRIEBS-ADRESSE #}
+  <section class="account-section">
+    <h2>Betriebsadresse</h2>
+    {% if producer.address %}
+      <p>{{ producer.address.street }}</p>
+      <p>{{ producer.address.zip }} {{ producer.address.city }}</p>
+      <p>{{ producer.address.country }}</p>
+    {% else %}
+      <p>Noch keine Adresse hinterlegt.</p>
+    {% endif %}
+    <a href="{{ url_for('edit_address') }}">Adresse bearbeiten</a>
+  </section>
+
+  {# PRODUKTE #}
+  <section class="account-section">
+    <h2>Produkte</h2>
+    {% if products %}
+      <ul>
+        {% for product in products %}
+          <li>
+            <strong>{{ product.name }}</strong> –
+            {{ product.price }} € –
+            Status: {{ product.status }}
+            <a href="{{ url_for('edit_product', product_id=product.id) }}">Bearbeiten</a>
+          </li>
+        {% endfor %}
+      </ul>
+    {% else %}
+      <p>Du hast noch keine Produkte angelegt.</p>
+    {% endif %}
+    <a href="{{ url_for('create_product') }}">Neues Produkt anlegen</a>
+  </section>
+
+  {# BESTELLUNGEN #}
+  <section class="account-section">
+    <h2>Bestellungen für deinen Betrieb</h2>
+    {% if orders %}
+      <ul>
+        {% for order in orders %}
+          <li>
+            <strong>Bestellung #{{ order.id }}</strong> –
+            {{ order.created_at.strftime("%d.%m.%Y") }} –
+            Gesamt: {{ order.total }} €
+            <a href="{{ url_for('business_order_detail', order_id=order.id) }}">Details</a>
+          </li>
+        {% endfor %}
+      </ul>
+    {% else %}
+      <p>Es liegen noch keine Bestellungen vor.</p>
+    {% endif %}
+  </section>
+
+  <form action="{{ url_for('logout') }}" method="post">
+    <button type="submit">Logout</button>
+  </form>
+{% endblock %}
