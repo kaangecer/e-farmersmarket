@@ -1,6 +1,7 @@
+import email
 from flask import Flask, redirect, render_template, request, url_for
-from forms import EmailOnlyLoginForm , PasswordOnlyLoginForm, SignupForm, CartForm
-from models import Category, Order, Product, User, db
+from forms import EditAddressForm, EditProducerProfileForm, EmailOnlyLoginForm , PasswordOnlyLoginForm, ProductForm, SignupForm, CartForm, SignupFormProducers
+from models import Address, Category, Order, ProducerProfile, Product, User, db
 from werkzeug.security import generate_password_hash, check_password_hash
 from flask_login import LoginManager, login_user, login_required, logout_user, current_user
 
