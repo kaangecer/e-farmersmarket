@@ -1,7 +1,6 @@
-import email
 from flask import Flask, redirect, render_template, request, url_for
 from forms import EditAddressForm, EditProducerProfileForm, EmailOnlyLoginForm , PasswordOnlyLoginForm, ProductForm, SignupForm, CartForm, SignupFormProducers
-from models import Address, Category, Order, ProducerProfile, Product, User, db
+from models import Address, Category, CustomerProfile, Order, ProducerProfile, Product, User, db
 from werkzeug.security import generate_password_hash, check_password_hash
 from flask_login import LoginManager, login_user, login_required, logout_user, current_user
 
@@ -106,6 +105,13 @@ def login():
                 role="CUSTOMER"
             )
             db.session.add(user)
+            db.session.flush()
+
+            customer_profile = CustomerProfile(
+                user_id=user.id
+            )
+            db.session.add(customer_profile)
+
             db.session.commit()
             login_user(user)
             return redirect(url_for("home"))
@@ -163,16 +169,17 @@ def business():
             user = User(
                 first_name = form.first_name.data,
                 last_name = form.last_name.data,
-                email = form.email.data,
+                email = form.email.data.strip().lower(),
                 role="PRODUCER"
             )
             user.set_password(form.password.data)
             db.session.add(user)
+            db.session.flush()
 
             address = Address(
                 street=form.street.data,
-                city=form.city.data,
                 zip_code=form.zip_code.data,
+                city=form.city.data,
                 country=form.country.data
             )
             db.session.add(address)
@@ -230,16 +237,29 @@ def edit_producer_profile():
 @app.route("/address/edit", methods=["GET", "POST"])
 @login_required
 def edit_address():
-    # Kundenadresse oder Producer-Adresse holen
     if current_user.role == "PRODUCER":
-        producer = current_user.producer_profile
-        address = producer.address
+        profile = current_user.producer_profile
+        back_endpoint = "business_dashboard"
     else:
-        # falls du eine direkte User-Address-Relation hast, sonst anpassen
-        address = current_user.address  
+        profile = current_user.customer_profile
+        back_endpoint = "account"
 
-    form = EditAddressForm(obj=address)
+    if profile is None:
+        print("No profile found for user")
+        return redirect(url_for(back_endpoint))
+    
+    address = profile.address
 
+    # falls addresse nicht existiert, erstelle eine
+    if address is None:
+        address = Address(street="", zip="", city="", country="")
+        db.session.add(address)
+        db.session.flush()           # erzeugt address.address_id
+        profile.address = address    # setzt profile.address_id
+        db.session.commit()
+
+    #wenn adresse besteht, aber geandert werden mochte
+    form = EditAddressForm(obj=profile.address)
     if form.validate_on_submit():
         address.street = form.street.data
         address.zip = form.zip_code.data
