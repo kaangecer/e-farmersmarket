@@ -3,39 +3,55 @@
 {% block title %}FoodLoop – Startseite{% endblock %}
 
 {% block content %}
+<section class="home-hero card">
+  <div class="home-hero__inner">
+    <div class="home-hero__text">
+      <h1 class="home-hero__title">Direkt vom Feld auf deinen Tisch</h1>
+      <p class="home-hero__subtitle">
+        FoodLoop verbindet Bauernhöfe, Hofläden und Hobbygärtner mit Menschen vor Ort –
+        frisch, transparent und ohne Zwischenhändler.
+      </p>
 
-<center>
-  <h1>Direkt vom Feld auf deinen Tisch</h1>
+      <div class="home-hero__actions">
+        <a href="{{ url_for('products') }}" class="btn btn-primary">Produkte entdecken</a>
+        <a href="{{ url_for('business') }}" class="btn btn-secondary">Produzent werden</a>
+      </div>
+    </div>
 
-  <p>
-    FoodLoop verbindet Bauernhöfe, Hofläden und Hobbygärtner mit Menschen vor Ort –
-    frisch, transparent und ohne Zwischenhändler.
-  </p>
+    <div class="home-hero__stats" aria-label="Plattformzahlen">
+      <div class="home-stat">
+        <div class="home-stat__value">50+</div>
+        <div class="home-stat__label">Produzenten</div>
+      </div>
+      <div class="home-stat">
+        <div class="home-stat__value">200+</div>
+        <div class="home-stat__label">Produkte</div>
+      </div>
+      <div class="home-stat">
+        <div class="home-stat__value">100%</div>
+        <div class="home-stat__label">Regional</div>
+      </div>
+    </div>
+  </div>
+</section>
 
-  <p>
-    <a href="/products" class="btn btn-primary">Produkte entdecken</a>
-    &nbsp;&nbsp;&nbsp;
-    <a href="/producer/signup" class="btn btn-secondary">Produzent werden</a>
-  </p>
+<section class="home-section">
+  <h2 class="section-title">So funktioniert FoodLoop</h2>
+  <p class="section-sub">In drei einfachen Schritten zu frischen Lebensmitteln aus deiner Region.</p>
 
-  <table>
-    <tr>
-      <td align="center">
-        <strong>50+</strong><br>
-        Produzenten
-      </td>
-      <td width="40"></td>
-      <td align="center">
-        <strong>200+</strong><br>
-        Produkte
-      </td>
-      <td width="40"></td>
-      <td align="center">
-        <strong>100%</strong><br>
-        Regional
-      </td>
-    </tr>
-  </table>
-</center>
-
+  <div class="grid grid-3">
+    <div class="card home-step">
+      <div class="home-step__title">1) Entdecken</div>
+      <div class="home-step__text">Finde Produkte von Höfen und Gärtnern in deiner Nähe.</div>
+    </div>
+    <div class="card home-step">
+      <div class="home-step__title">2) Bestellen</div>
+      <div class="home-step__text">Lege Artikel in den Warenkorb und bestelle direkt beim Produzenten.</div>
+    </div>
+    <div class="card home-step">
+      <div class="home-step__title">3) Abholen</div>
+      <div class="home-step__text">Hol deine Bestellung ab – frisch, transparent und ohne Umwege.</div>
+    </div>
+  </div>
+</section>
 {% endblock %}
