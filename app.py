@@ -123,11 +123,15 @@ def login():
 @app.route("/account")
 @login_required
 def account():
+    user = current_user
+    profile = user.customer_profile
+    address = profile.address if profile else None
+    form = EditAddressForm(obj=address)
     if current_user.customer_profile:
-        customer_profile = current_user.customer_profile.orders.all()
+        orders = current_user.customer_profile.orders.all()
     else:
-        customer_profile = []
-    return render_template("account.html", user=current_user, orders=customer_profile)
+        orders = []
+    return render_template("account.html", user=user, orders=orders, address=address, form=form)
 
 @app.route("/logout", methods=["POST"])
 @login_required
@@ -259,7 +263,8 @@ def edit_address():
         db.session.commit()
 
     #wenn adresse besteht, aber geandert werden mochte
-    form = EditAddressForm(obj=profile.address)
+    form = EditAddressForm()
+
     if form.validate_on_submit():
         address.street = form.street.data
         address.zip = form.zip_code.data
@@ -267,13 +272,13 @@ def edit_address():
         address.country = form.country.data
         db.session.commit()
 
-        # Nach Rollentyp zurückleiten
+            # Nach Rollentyp zurückleiten
         if current_user.role == "PRODUCER":
             return redirect(url_for("business_dashboard"))
         else:
             return redirect(url_for("account"))
 
-    return render_template("edit_address.html", form=form)
+    return render_template("back_endpoint")
 
 @app.route("/business/products/new", methods=["GET", "POST"])
 @login_required
@@ -282,7 +287,7 @@ def create_product():
     if not producer:
         return redirect(url_for("business_dashboard"))
 
-    form = ProductForm(obj=product)
+    form = ProductForm()
     if form.validate_on_submit():
         product = Product(
             name=form.name.data,
