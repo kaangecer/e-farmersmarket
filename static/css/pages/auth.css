@@ -1,0 +1,30 @@
+/* Signup & login layout */
+
+.auth-layout {
+    display: flex;
+    justify-content: center;      /* center the whole form horizontally */
+    margin-top: 2rem;
+}
+
+.auth-form {
+    display: flex;
+    flex-direction: column;       /* stack rows */
+    gap: 1rem;
+    width: 100%;
+    max-width: 360px;
+}
+
+.form-row {
+    display: flex;
+    flex-direction: column;       /* label above input */
+}
+
+.form-row input {
+    padding: 0.5rem;
+    font: inherit;
+}
+
+.form-actions {
+    display: flex;
+    justify-content: flex-end;    /* button in right corner of last row */
+}
