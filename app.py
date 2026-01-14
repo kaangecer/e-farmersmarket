@@ -105,13 +105,12 @@ def login():
                 role="CUSTOMER"
             )
             db.session.add(user)
-            db.session.flush()
+            db.session.commit()
 
             customer_profile = CustomerProfile(
                 user_id=user.id
             )
             db.session.add(customer_profile)
-
             db.session.commit()
             login_user(user)
             return redirect(url_for("home"))
@@ -266,7 +265,7 @@ def edit_address():
 
     if form.validate_on_submit():
         address.street = form.street.data
-        address.zip = form.zip_code.data
+        address.zip = form.zip.data
         address.city = form.city.data
         address.country = form.country.data
         db.session.commit()
@@ -274,7 +273,7 @@ def edit_address():
     
         return redirect(url_for(back_endpoint))
 
-    return render_template("back_endpoint")
+    return render_template(f"{back_endpoint}.html", form=form, address=address)
 
 @app.route("/business/products/new", methods=["GET", "POST"])
 @login_required
@@ -323,7 +322,6 @@ def edit_product(product_id):
 @login_required
 def business_order_detail(order_id):
     producer = current_user.producer_profile
-    # TODO: restrict to orders containing this producer's products
     order = Order.query.get_or_404(order_id)
     return render_template("business_order_detail.html", order=order)
 
@@ -332,7 +330,7 @@ def business_order_detail(order_id):
 def delete_account():
     user = User.query.get(current_user.id)
     
-    db.session.delete(user)  # CustomerProfile wird durch cascade mitgelöscht
+    db.session.delete(user)
     db.session.commit()
     
     logout_user()
