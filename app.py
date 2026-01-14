@@ -271,12 +271,9 @@ def edit_address():
         address.city = form.city.data
         address.country = form.country.data
         db.session.commit()
-
-            # Nach Rollentyp zurückleiten
-        if current_user.role == "PRODUCER":
-            return redirect(url_for("business_dashboard"))
-        else:
-            return redirect(url_for("account"))
+        print("SAVED ADDRESS:", address.street, address.zip, address.city, address.country)
+    
+        return redirect(url_for(back_endpoint))
 
     return render_template("back_endpoint")
 
