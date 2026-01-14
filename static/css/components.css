@@ -1,0 +1,36 @@
+.btn {
+    display: inline-block;
+    padding: 0.7rem 1.4rem;
+    border-radius: 999px;
+    border: none;
+    cursor: pointer;
+    text-decoration: none;
+    font-weight: 600;
+}
+
+.btn-primary {
+    background: #0b7a4b;
+    color: white;
+}
+
+.btn-secondary {
+    background: white;
+    color: #0b7a4b;
+    border: 1px solid #0b7a4b;
+}
+
+.card {
+    background: white;
+    border-radius: 0.75rem;
+    padding: 1.5rem;
+    box-shadow: 0 8px 20px rgba(0,0,0,0.06);
+    margin-bottom: 1.5rem;
+}
+
+input,
+select {
+    padding: 0.5rem 0.7rem;
+    border-radius: 999px;
+    border: 1px solid #ccc;
+    font: inherit;
+}
