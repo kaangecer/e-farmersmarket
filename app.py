@@ -206,7 +206,6 @@ def business():
             return redirect(url_for("business_account"))
         
         return render_template("business.html", step="signup", email=email, form=form)
-    return redirect(url_for("business"))
 
 @app.route("/business/account")
 @login_required
