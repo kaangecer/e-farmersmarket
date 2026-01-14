@@ -140,7 +140,8 @@ def logout():
 
 @app.route("/business", methods=["GET", "POST"])
 def business():
-    step = request.args.get("step", "email")
+
+    step = request.args.get("step", "landing")
     email = request.args.get("email", "").strip().lower()
 
     if step == "landing":
