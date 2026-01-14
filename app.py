@@ -205,6 +205,10 @@ def business():
             return redirect(url_for("business_account"))
         
         return render_template("business.html", step="signup", email=email, form=form)
+    # else:  # treat anything else as signup
+    #     form = SignupForm()
+    # return render_template("business.html", step="signup", email=email, form=form)
+
 
 @app.route("/business/account")
 @login_required
