@@ -17,8 +17,8 @@ class User(db.Model, UserMixin):
     role = db.Column(db.String(20), nullable=False)  # 'CUSTOMER' | 'PRODUCER'
     created_at = db.Column(db.DateTime, default=datetime.utcnow, nullable=False)
 
-    customer_profile = db.relationship("CustomerProfile", back_populates="user", uselist=False)
-    producer_profile = db.relationship("ProducerProfile", back_populates="user", uselist=False)
+    customer_profile = db.relationship("CustomerProfile", back_populates="user", uselist=False, cascade="all, delete-orphan")
+    producer_profile = db.relationship("ProducerProfile", back_populates="user", uselist=False, cascade="all, delete-orphan")
 
 
 class Address(db.Model):
