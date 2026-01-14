@@ -144,7 +144,7 @@ def business():
     step = request.args.get("step", "email")
     email = request.args.get("email", "").strip().lower()
 
-    if email:
+    if step == "landing":
         form = EmailOnlyLoginForm()
         if form.validate_on_submit():
             email = form.email.data.strip().lower()
@@ -153,7 +153,7 @@ def business():
                 return redirect(url_for("business", step="password", email=email))
             else:
                 return redirect(url_for("business", step="signup", email=email))
-        return render_template("business.html", step="email", email=email, form=form)
+        return render_template("business.html", step="landing", email=email, form=form)
     
     if step == "password":
         form = PasswordOnlyLoginForm()
