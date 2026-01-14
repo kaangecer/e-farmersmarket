@@ -328,5 +328,18 @@ def business_order_detail(order_id):
     order = Order.query.get_or_404(order_id)
     return render_template("business_order_detail.html", order=order)
 
+@app.route("/delete_account", methods=["POST"])
+@login_required
+def delete_account():
+    user = User.query.get(current_user.id)
+    
+    db.session.delete(user)  # CustomerProfile wird durch cascade mitgelöscht
+    db.session.commit()
+    
+    logout_user()
+    
+    return redirect(url_for("home"))
+
+
 if __name__ == "__main__":
     app.run(debug=True)
