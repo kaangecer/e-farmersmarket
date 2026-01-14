@@ -134,12 +134,11 @@ class EditAddressForm(FlaskForm):
         "Straße und Hausnummer",
         validators=[InputRequired(), Length(min=3, max=255)],
     )
-    zip_code = StringField(
+    zip = StringField(
         "PLZ",
         validators=[
             InputRequired(),
             Length(min=4, max=10),
-            Regexp(r"^[0-9]+$", message="Bitte nur Ziffern eingeben."),
         ],
     )
     city = StringField(

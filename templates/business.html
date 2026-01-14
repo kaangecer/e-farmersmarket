@@ -1,80 +1,126 @@
 {% extends "base.html" %}
-{% block title %}Business-Dashboard{% endblock %}
+{% block title %}FoodLoop für Erzeuger{% endblock %}
 
 {% block content %}
-  <h1>Mein Betrieb</h1>
 
-  <p>Eingeloggt als: {{ current_user.email }}</p>
-
-  {# PRODUZENTEN-PROFIL #}
-  <section class="account-section">
-    <h2>Profil</h2>
-    <p><strong>Öffentlicher Name:</strong> {{ producer.display_name }}</p>
-    <p><strong>Rechtlicher Name:</strong>
-      {{ producer.legal_name or "nicht hinterlegt" }}
-    </p>
-    <p><strong>Kontakt-E-Mail:</strong> {{ producer.contact_email }}</p>
-    <p><strong>Telefon:</strong> {{ producer.contact_phone or "nicht hinterlegt" }}</p>
-    <p><strong>Status:</strong> {{ producer.verification_status }}</p>
-    <p><strong>Profil angelegt am:</strong>
-      {{ producer.created_at.strftime("%d.%m.%Y") }}
-    </p>
-    <a href="{{ url_for('edit_producer_profile') }}">Profil bearbeiten</a>
+{% if step == "landing" %}
+  {# MARKETING HERO SECTION #}
+  <section class="hero">
+    <h1>Verkaufe deine Produkte direkt an Kunden</h1>
+    <p>Mit FoodLoop erreichst du lokale Kunden ohne Zwischenhändler. Faire Preise, volle Kontrolle, regionale Wertschöpfung.</p>
   </section>
 
-  {# BETRIEBS-ADRESSE #}
-  <section class="account-section">
-    <h2>Betriebsadresse</h2>
-    {% if producer.address %}
-      <p>{{ producer.address.street }}</p>
-      <p>{{ producer.address.zip }} {{ producer.address.city }}</p>
-      <p>{{ producer.address.country }}</p>
-    {% else %}
-      <p>Noch keine Adresse hinterlegt.</p>
-    {% endif %}
-    <a href="{{ url_for('edit_address') }}">Adresse bearbeiten</a>
-  </section>
-
-  {# PRODUKTE #}
-  <section class="account-section">
-    <h2>Produkte</h2>
-    {% if products %}
-      <ul>
-        {% for product in products %}
-          <li>
-            <strong>{{ product.name }}</strong> –
-            {{ product.price }} € –
-            Status: {{ product.status }}
-            <a href="{{ url_for('edit_product', product_id=product.id) }}">Bearbeiten</a>
-          </li>
+  {# ZENTRALES EMAIL-FELD #}
+  <section class="email-form-section">
+    <h2>Jetzt starten</h2>
+    <form method="POST" action="{{ url_for('business', step='landing') }}">
+      {{ form.hidden_tag() }}
+      <div class="form-row">
+        {{ form.email(class_="form-control", placeholder="Deine E-Mail-Adresse") }}
+        {% for error in form.email.errors %}
+          <div class="text-danger small">{{ error }}</div>
         {% endfor %}
-      </ul>
-    {% else %}
-      <p>Du hast noch keine Produkte angelegt.</p>
-    {% endif %}
-    <a href="{{ url_for('create_product') }}">Neues Produkt anlegen</a>
+      </div>
+      {{ form.submit(class_="btn btn-primary") }}
+    </form>
   </section>
 
-  {# BESTELLUNGEN #}
-  <section class="account-section">
-    <h2>Bestellungen für deinen Betrieb</h2>
-    {% if orders %}
-      <ul>
-        {% for order in orders %}
-          <li>
-            <strong>Bestellung #{{ order.id }}</strong> –
-            {{ order.created_at.strftime("%d.%m.%Y") }} –
-            Gesamt: {{ order.total }} €
-            <a href="{{ url_for('business_order_detail', order_id=order.id) }}">Details</a>
-          </li>
-        {% endfor %}
-      </ul>
-    {% else %}
-      <p>Es liegen noch keine Bestellungen vor.</p>
-    {% endif %}
+  {# WEITERE MARKETING-INFOS #}
+  <section class="benefits">
+    <h2>Warum FoodLoop?</h2>
+    <ul>
+      <li>Direkte Bestellungen von Kunden aus deiner Region</li>
+      <li>Keine versteckten Provisionen</li>
+      <li>Du bestimmst Preise und Verfügbarkeit</li>
+      <li>Einfaches Dashboard zur Verwaltung</li>
+    </ul>
   </section>
 
-  <form action="{{ url_for('logout') }}" method="post">
-    <button type="submit">Logout</button>
+{% elif step == "password" %}
+  {# PASSWORD STEP #}
+  <h2>Willkommen zurück</h2>
+  <p>Für: <strong>{{ email }}</strong></p>
+  
+  <form method="POST" action="{{ url_for('business', step='password', email=email) }}">
+    {{ form.hidden_tag() }}
+    <div class="form-row">
+      {{ form.password.label }}
+      {{ form.password(class_="form-control") }}
+      {% for error in form.password.errors %}
+        <div class="text-danger small">{{ error }}</div>
+      {% endfor %}
+    </div>
+    {{ form.submit(class_="btn btn-primary") }}
   </form>
+
+{% elif step == "signup" %}
+  {# SIGNUP STEP #}
+  <h2>Betrieb registrieren</h2>
+  <p>Kein Konto gefunden für <strong>{{ email }}</strong></p>
+  
+  <form method="POST" action="{{ url_for('business', step='signup', email=email) }}">
+    {{ form.hidden_tag() }}
+    
+    <h3>Persönliche Daten</h3>
+    <div class="form-row">
+      {{ form.first_name.label }}
+      {{ form.first_name(class_="form-control") }}
+    </div>
+    <div class="form-row">
+      {{ form.last_name.label }}
+      {{ form.last_name(class_="form-control") }}
+    </div>
+    <div class="form-row">
+      {{ form.password.label }}
+      {{ form.password(class_="form-control") }}
+    </div>
+    <div class="form-row">
+      {{ form.password_confirm.label }}
+      {{ form.password_confirm(class_="form-control") }}
+    </div>
+
+    <h3>Betriebsdaten</h3>
+    <div class="form-row">
+      {{ form.display_name.label }}
+      {{ form.display_name(class_="form-control") }}
+    </div>
+    <div class="form-row">
+      {{ form.legal_name.label }}
+      {{ form.legal_name(class_="form-control") }}
+    </div>
+    <div class="form-row">
+      {{ form.tax_id.label }}
+      {{ form.tax_id(class_="form-control") }}
+    </div>
+    <div class="form-row">
+      {{ form.contact_email.label }}
+      {{ form.contact_email(class_="form-control") }}
+    </div>
+    <div class="form-row">
+      {{ form.contact_phone.label }}
+      {{ form.contact_phone(class_="form-control") }}
+    </div>
+
+    <h3>Adresse</h3>
+    <div class="form-row">
+      {{ form.street.label }}
+      {{ form.street(class_="form-control") }}
+    </div>
+    <div class="form-row">
+      {{ form.zip.label }}
+      {{ form.zip(class_="form-control") }}
+    </div>
+    <div class="form-row">
+      {{ form.city.label }}
+      {{ form.city(class_="form-control") }}
+    </div>
+    <div class="form-row">
+      {{ form.country.label }}
+      {{ form.country(class_="form-control") }}
+    </div>
+
+    {{ form.submit(class_="btn btn-primary") }}
+  </form>
+{% endif %}
+
 {% endblock %}

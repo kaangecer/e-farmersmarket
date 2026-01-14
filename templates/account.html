@@ -17,7 +17,7 @@
     <h2>Standard-Lieferadresse</h2>
     {% if address %}
     <p>{{ address.street }}</p>
-    <p>{{ address.zip_code }} {{ address.city }} {{ address.country }}</p>
+    <p>{{ address.zip }} {{ address.city }} {{ address.country }}</p>
     {% else %}
     <p>Keine Adresse hinterlegt.</p>
     {% endif %}
@@ -35,6 +35,7 @@
   <div class="modal fade" id="editAddressModal" tabindex="-1" aria-labelledby="editAddressModalLabel" aria-hidden="true">
     <div class="modal-dialog">
       <div class="modal-content">
+        <form method="post" action="{{ url_for('edit_address') }}">
         <div class="modal-header">
           <h5 class="modal-title" id="editAddressModalLabel">Adresse bearbeiten</h5>
           <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
@@ -51,9 +52,9 @@
             </div>
 
             <div class="mb-3">
-              {{ form.zip_code.label(class="form-label") }}
-              {{ form.zip_code(class="form-control") }}
-              {% for error in form.zip_code.errors %}
+              {{ form.zip.label(class="form-label") }}
+              {{ form.zip(class="form-control") }}
+              {% for error in form.zip.errors %}
                 <div class="text-danger small">{{ error }}</div>
               {% endfor %}
             </div>
@@ -77,8 +78,7 @@
           <div class="modal-footer">
             <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Abbrechen</button>
             <button type="submit" class="btn btn-primary">
-              {{ form.submit.label.text }}
-            </button>
+              {{ form.submit.label.text }} </button>
           </div>
         </form>
       </div>
@@ -106,4 +106,10 @@
   <form action="{{ url_for('logout') }}" method="post">
     <button type="submit">Logout</button>
   </form>
+
+  <form action="{{ url_for('delete_account') }}" method="post" style="margin-top: 1rem;" 
+      onsubmit="return confirm('Account unwiderruflich löschen?');">
+  <button type="submit" class="btn btn-danger">Account löschen</button>
+</form>
+
 {% endblock %}
