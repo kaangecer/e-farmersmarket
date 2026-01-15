@@ -4,22 +4,20 @@ body {
     background: #f5f5f5;
     color: #222;
 
-    /* verhindert ggf. horizontales Scrollen bei Full-Width-Sections */
     overflow-x: hidden;
 }
 
 header {
-    background: #ffffff;              /* HEADER WEISS */
+    background: #ffffff;
     color: #1f2a1f;
     padding: 1rem 2rem;
     display: flex;
     justify-content: space-between;
     align-items: center;
 
-    border-bottom: 1px solid #e6e6e6; /* leichte Trennlinie */
+    border-bottom: 1px solid #e6e6e6;
 }
 
-/* damit die Links schön in einer Reihe stehen */
 header nav {
     display: flex;
     align-items: center;
@@ -28,10 +26,10 @@ header nav {
 }
 
 header a {
-    color: #1f5b3a;                   /* dunkelgrün */
+    color: #1f5b3a;
     text-decoration: none;
     font-weight: 600;
-    margin-left: 0;                   /* weil wir gap verwenden */
+    margin-left: 0;
 }
 
 header a:hover {
@@ -39,9 +37,11 @@ header a:hover {
 }
 
 .logo {
-    font-weight: 800;
+    font-weight: 900;
     letter-spacing: 0.05em;
-    color: #1f5b3a;                   /* Logo dunkelgrün */
+    color: #1f5b3a;
+
+    font-family: Georgia, "Times New Roman", Times, serif;
 }
 
 footer {
