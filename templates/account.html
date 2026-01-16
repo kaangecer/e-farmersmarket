@@ -16,8 +16,9 @@
   <section class="account-section">
     <h2>Standard-Lieferadresse</h2>
     {% if address %}
-    <p>{{ address.street }}</p>
-    <p>{{ address.zip }} {{ address.city }} {{ address.country }}</p>
+    <p class="mb-1">{{ address.street }}</p>
+    <p class="mb-1">{{ address.zip }}, {{ address.city }} </p>
+    <p class="mb-1">{{ address.country }}</p>
     {% else %}
     <p>Keine Adresse hinterlegt.</p>
     {% endif %}
