@@ -11,7 +11,8 @@
     {% block extra_head %}{% endblock %}
 </head>
 <body>
-<header>
+
+<header class="site-header {% block header_class %}{% endblock %}">
     <div class="logo">
         FoodLoop
     </div>
@@ -31,7 +32,6 @@
     </nav>
 </header>
 
-<!-- WICHTIG -->
 <main class="{% block main_class %}{% endblock %}">
     {% block content %}{% endblock %}
 </main>
