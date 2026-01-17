@@ -32,8 +32,9 @@ def products():
 
 @app.route("/producers")
 def producers():
-    producers = User.query.filter_by(role="PRODUCER").all()
-    return render_template("producers.html", producers=producers)
+    producers = ProducerProfile.query.all()
+    return render_template("producers.html", producers=producers, current_zip="", current_type="")
+
 
 @app.route("/maps")
 def maps():

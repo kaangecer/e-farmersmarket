@@ -9,38 +9,29 @@
         Finde Bauernhöfe, Hofläden und Hobbygärtner in deiner Nähe.
     </p>
 
-    <div class="card">
-        <form method="get" class="inline-form">
-            <input type="text" name="zip" placeholder="PLZ"
-                   value="{{ current_zip }}" style="max-width:120px;">
-            <select name="type">
-                <option value="">Typ wählen</option>
-                {% set types = ["Bauernhof", "Hofladen", "Hobbygärtner"] %}
-                {% for t in types %}
-                    <option value="{{ t }}"
-                            {% if current_type == t %}selected{% endif %}>
-                        {{ t }}
-                    </option>
-                {% endfor %}
-            </select>
-            <button class="btn btn-primary" type="submit">Filtern</button>
-            <a href="{{ url_for('producers') }}" class="btn btn-secondary">Zurücksetzen</a>
-        </form>
-    </div>
-
     <div class="grid">
         {% if producers %}
             {% for prod in producers %}
                 <div class="card">
-                    <h3>{{ prod.name }}</h3>
-                    <p><strong>Typ:</strong> {{ prod.type }}</p>
-                    <p><strong>PLZ:</strong> {{ prod.zip }}</p>
-                    <p>{{ prod.description }}</p>
+                    <h3>{{ prod.display_name }}</h3>
+
+                    <p><strong>Kontakt:</strong> {{ prod.contact_email }}</p>
+
+                    <p>
+                        <strong>Adresse:</strong>
+                        {% if prod.address %}
+                            {{ prod.address.street }}, {{ prod.address.zip }} {{ prod.address.city }}, {{ prod.address.country }}
+                        {% else %}
+                            Keine Adresse hinterlegt
+                        {% endif %}
+                    </p>
+
+                    <p><strong>Status:</strong> {{ prod.verification_status }}</p>
                 </div>
             {% endfor %}
         {% else %}
             <div class="card">
-                <p>Keine Produzenten gefunden. Passe deine Filter an.</p>
+                <p>Keine Produzenten gefunden.</p>
             </div>
         {% endif %}
     </div>
