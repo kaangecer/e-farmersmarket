@@ -128,3 +128,21 @@
     gap: 1.5rem;
   }
 }
+.home-map {
+  padding: 3rem 0 4rem;
+  background: #f5f5f5;
+}
+
+.home-map__inner {
+  max-width: 1100px;
+  margin: 0 auto;
+  padding: 0 1rem;
+}
+
+.home-map__canvas {
+  height: 520px;
+  border-radius: 16px;
+  overflow: hidden;
+  background: #e9ecef;
+  box-shadow: 0 8px 20px rgba(0,0,0,0.06);
+}

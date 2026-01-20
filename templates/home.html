@@ -5,6 +5,10 @@
 {% block header_class %}site-header--light{% endblock %}
 {% block main_class %}main--full{% endblock %}
 
+{% block extra_head %}
+<link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css">
+{% endblock %}
+
 {% block content %}
 <section class="home-hero">
   <div class="home-hero__inner">
@@ -64,4 +68,18 @@
     </div>
   </div>
 </section>
+
+<!-- MAP SECTION -->
+<section class="home-map">
+  <div class="home-map__inner">
+    <h2 class="section-title">Karte</h2>
+    <p class="section-sub">Hier werden später die Produzentenstandorte angezeigt.</p>
+
+    <div id="homeMap" class="home-map__canvas" aria-label="Karte mit Produzenten"></div>
+  </div>
+</section>
+
+<!-- Leaflet JS + dein Map-Init Script -->
+<script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+<script defer src="{{ url_for('static', filename='js/home_map.js') }}"></script>
 {% endblock %}
