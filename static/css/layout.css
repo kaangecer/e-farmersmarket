@@ -32,3 +32,10 @@ form.inline-form > * {
     margin-right: 0.5rem;
     margin-bottom: 0.5rem;
 }
+
+/* Full width main for specific pages (e.g. homepage) */
+main.main--full {
+    max-width: none;
+    margin: 0;
+    padding: 0;
+}
