@@ -92,7 +92,7 @@ class SignupFormProducers(FlaskForm):
         "Straße und Hausnummer",
         validators=[InputRequired(), Length(min=3, max=255)],
     )
-    zip_code = StringField(
+    zip = StringField(
         "PLZ",
         validators=[
             InputRequired(),

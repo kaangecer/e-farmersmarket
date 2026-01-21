@@ -183,7 +183,7 @@ def business():
 
             address = Address(
                 street=form.street.data,
-                zip_code=form.zip_code.data,
+                zip=form.zip.data,
                 city=form.city.data,
                 country=form.country.data
             )
