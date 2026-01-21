@@ -58,7 +58,10 @@ def cart():
         city = form.city.data
         zip_code = form.zip_code.data
         payment_method = form.payment_method.data
+        return redirect(url_for("home"))
+    
     return render_template("cart.html", form=form, user_logged_in=user_logged_in)
+
 
 @app.route("/login", methods=["GET", "POST"])
 def login():
@@ -246,7 +249,7 @@ def edit_producer_profile():
 def edit_address():
     if current_user.role == "PRODUCER":
         profile = current_user.producer_profile
-        back_endpoint = "business_dashboard"
+        back_endpoint = "business"
     else:
         profile = current_user.customer_profile
         back_endpoint = "account"
