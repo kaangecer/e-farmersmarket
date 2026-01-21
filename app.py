@@ -176,9 +176,9 @@ def business():
         form = SignupFormProducers()
         if form.validate_on_submit():
             user = User(
-                first_name = form.first_name.data,
-                last_name = form.last_name.data,
-                email = form.email.data.strip().lower(),
+                first_name=form.first_name.data,
+                last_name=form.last_name.data,
+                email=form.email.data.strip().lower(),
                 role="PRODUCER"
             )
             user.set_password(form.password.data)
@@ -196,13 +196,13 @@ def business():
             db.session.flush()
 
             producer_profile = ProducerProfile(
-                user_id = user.id,
-                address_id = address.address_id,
-                display_name = form.display_name.data,
-                legal_name = form.legal_name.data,
-                tax_id = form.tax_id.data,
-                contact_email = form.contact_email.data,
-                contact_phone = form.contact_phone.data
+                user_id=user.id,
+                address_id=address.address_id,
+                display_name=form.display_name.data,
+                legal_name=form.legal_name.data,
+                tax_id=form.tax_id.data,
+                contact_email=form.contact_email.data,
+                contact_phone=form.contact_phone.data
             )
             db.session.add(producer_profile)
             db.session.commit()
