@@ -4,6 +4,7 @@ from models import Address, Category, CustomerProfile, Order, ProducerProfile, P
 from werkzeug.security import generate_password_hash, check_password_hash
 from flask_login import LoginManager, login_user, login_required, logout_user, current_user
 
+# app setup with login manager, db connection, 
 
 app = Flask(__name__)
 login_manager = LoginManager(app)
@@ -16,42 +17,48 @@ print("DB URI:", app.config["SQLALCHEMY_DATABASE_URI"])
 
 db.init_app(app)
 
+#user speichern und user_id laden
 @login_manager.user_loader
 def load_user(user_id):
     return User.query.get(int(user_id))
 
+# home page route
 @app.route("/")
 def home():
     return render_template("home.html")
 
+# produkte seite: aktive Produkte + Kategorien anzeigen
 @app.route("/products")
 def products():
     products = Product.query.filter_by(is_active=True).all()
     categories = Category.query.all()
     return render_template("products.html", products=products, categories=categories)
 
+# produzenten: ProducerProfile anzeigen von Producer table
 @app.route("/producers")
 def producers():
     producers = ProducerProfile.query.all()
     return render_template("producers.html", producers=producers, current_zip="", current_type="")
 
-
+# Karte: Map-Seite anzeigen
 @app.route("/maps")
 def maps():
     return render_template("maps.html") 
+
 
 @app.route("/cart", methods=["GET", "POST"])
 def cart():
     form = CartForm()
     
-    user_logged_in = current_user.is_authenticated
+    user_logged_in = current_user.is_authenticated #ist user eingeloggt?
 
-    if request.method == "GET" and user_logged_in:
+    if request.method == "GET" and user_logged_in: #
         form.email.data = current_user.email
         form.first_name.data = current_user.first_name
         form.last_name.data = current_user.last_name
 
-    if form.validate_on_submit():
+    # wenn Formular abgeschickt wird
+    if form.validate_on_submit(): 
         email = form.email.data
         first_name = form.first_name.data
         last_name = form.last_name.data
@@ -65,17 +72,19 @@ def cart():
     return render_template("cart.html", form=form, user_logged_in=user_logged_in)
 
 
+
+# email first workflow for login and signup
 @app.route("/login", methods=["GET", "POST"])
 def login():
 
-    step = request.args.get("step", "email")  # "email", "password", or "signup"
-    email = request.args.get("email", "").strip().lower()
+    step = request.args.get("step", "email") #wert aus der URL holen, schritt definieren
+    email = request.args.get("email", "").strip().lower() 
 
     if step == "email":
         form = EmailOnlyLoginForm()
         if form.validate_on_submit():
-            email = form.email.data.strip().lower()
-            user = User.query.filter_by(email=email).first()
+            email = form.email.data.strip().lower() #get email from form
+            user = User.query.filter_by(email=email).first() #check if user email exists
             if user:
                 return redirect(url_for("login", step="password", email=email))
             else:
@@ -85,10 +94,10 @@ def login():
     if step == "password":
         form = PasswordOnlyLoginForm()
         if form.validate_on_submit():
-            password = form.password.data
-            user = User.query.filter_by(email=email).first()
+            password = form.password.data #get password from form
+            user = User.query.filter_by(email=email).first() #find user by email, save in user variable
             if user and check_password_hash(user.password_hash, password):
-                login_user(user)
+                login_user(user) #log user in if password matches
                 return redirect(url_for("home"))
             else:
                 form.password.errors.append("Falsches Passwort.")
@@ -99,7 +108,6 @@ def login():
         if form.validate_on_submit():
             first_name = form.first_name.data
             last_name = form.last_name.data
-            username = form.username.data
             password = form.password.data
 
             user = User(
@@ -116,13 +124,14 @@ def login():
             db.session.add(customer_profile)
             db.session.commit()
 
-            login_user(user)
+            login_user(user) #remember loged in user
             return redirect(url_for("home"))
         return render_template("login.html", step="signup", email=email, form=form)
     else:  # treat anything else as signup
         form = SignupForm()
         return render_template("login.html", step="signup", email=email, form=form)
 
+# account settings page
 @app.route("/account")
 @login_required
 def account():
@@ -138,12 +147,15 @@ def account():
 
     return render_template("account.html", user=user, orders=orders, address=address, form=form)
 
+
+# Logout
 @app.route("/logout", methods=["POST"])
 @login_required
 def logout():
     logout_user()
     return redirect(url_for("home"))
 
+# Business (Producer): Email first workflow for login and signup
 @app.route("/business", methods=["GET", "POST"])
 def business():
     step = request.args.get("step", "landing")
@@ -216,17 +228,22 @@ def business():
     # return render_template("business.html", step="signup", email=email, form=form)
 
 
+# Business Dashboard: Producer-Profil + Produkte anzeigen
 @app.route("/business/account")
 @login_required
 def business_account():
     producer = current_user.producer_profile
     if not producer:
-        return redirect(url_for("business"), step="signup", email=current_user.email)
+        return redirect(url_for("business"), step="signup", email=current_user.email) #verify that user is producer
 
     products = producer.products.all()
     orders = []
     return render_template("business_account.html", producer=producer, products=products, orders=orders)
 
+
+# ------------------------------------------------------------
+# Producer Profil bearbeiten
+# ------------------------------------------------------------
 @app.route("/business/profile/edit", methods=["GET", "POST"])
 @login_required
 def edit_producer_profile():
@@ -245,6 +262,10 @@ def edit_producer_profile():
 
     return render_template("edit_producer_profile.html", form=form)
 
+
+# ------------------------------------------------------------
+# Adresse bearbeiten (Customer oder Producer)
+# ------------------------------------------------------------
 @app.route("/address/edit", methods=["GET", "POST"])
 @login_required
 def edit_address():
@@ -284,6 +305,10 @@ def edit_address():
 
     return render_template(f"{back_endpoint}.html", form=form, address=address)
 
+
+# ------------------------------------------------------------
+# Produkt anlegen (Producer)
+# ------------------------------------------------------------
 @app.route("/business/products/new", methods=["GET", "POST"])
 @login_required
 def create_product():
@@ -307,6 +332,9 @@ def create_product():
     return render_template("product_form.html", form=form)
     
 
+# ------------------------------------------------------------
+# Produkt bearbeiten (Producer)
+# ------------------------------------------------------------
 @app.route("/business/products/<int:product_id>/edit", methods=["GET", "POST"])
 @login_required
 def edit_product(product_id):
@@ -327,6 +355,10 @@ def edit_product(product_id):
 
     return render_template("product_form.html", form=form, product=product)
 
+
+# ------------------------------------------------------------
+# Order-Detail (Producer)
+# ------------------------------------------------------------
 @app.route("/business/orders/<int:order_id>")
 @login_required
 def business_order_detail(order_id):
@@ -334,6 +366,10 @@ def business_order_detail(order_id):
     order = Order.query.get_or_404(order_id)
     return render_template("business_order_detail.html", order=order)
 
+
+# ------------------------------------------------------------
+# Account löschen
+# ------------------------------------------------------------
 @app.route("/delete_account", methods=["POST"])
 @login_required
 def delete_account():
