@@ -1,57 +1,82 @@
 {% extends "base.html" %}
+{# Wir verwenden das Grundlayout aus base.html (Header, Footer, CSS-Einbindung usw.). #}
+
 
 {% block title %}FoodLoop – Startseite{% endblock %}
+{# Seitentitel im Browser-Tab. #}
 
 {% block header_class %}site-header--light{% endblock %}
+{# Auf der Homepage soll der Header die "helle" Variante bekommen (z. B. weiß). #}
+
 {% block main_class %}main--full{% endblock %}
+{# Homepage nutzt ein full-width Layout für den Hero-Bereich. #}
 
 {% block extra_head %}
 <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css">
+{# Leaflet CSS für die Karte (damit Tiles/Marker korrekt gestylt sind). #}
 {% endblock %}
 
 {% block content %}
+{# Inhalt der Seite beginnt hier. #}
+
 <section class="home-hero">
+  {# Hero-Bereich (Banner): unser Haupt-Intro der Startseite. #}
+
   <div class="home-hero__inner">
+    {# Container, der den Inhalt zentriert und begrenzt (Design/Spacing). #}
 
     <div class="home-hero__text">
+      {# Textbereich im Hero: Headline, Beschreibung, Buttons und Stats. #}
+
       <h1 class="home-hero__title">
         Direkt vom Feld auf deinen Tisch
       </h1>
+      {# Hauptüberschrift / klare Botschaft für die Startseite. #}
 
       <p class="home-hero__subtitle">
         FoodLoop verbindet Bauernhöfe, Hofläden und Hobbygärtner mit Menschen vor Ort –
         frisch, transparent und ohne Zwischenhändler.
       </p>
+      {# Kurzbeschreibung: erklärt in einem Satz den Nutzen der Plattform. #}
 
       <div class="home-hero__actions">
+        {# Call-to-Action Buttons: Nutzer soll direkt eine Aktion machen. #}
         <a href="{{ url_for('products') }}" class="btn btn-primary">Produkte entdecken</a>
         <a href="{{ url_for('business') }}" class="btn btn-secondary">Produzent werden</a>
       </div>
 
       <div class="home-hero__stats" aria-label="Plattformzahlen">
+        {# Kleine Kennzahlen, um Vertrauen/Größe der Plattform zu zeigen. #}
+
         <div class="home-stat">
           <div class="home-stat__value">50+</div>
           <div class="home-stat__label">Produzenten</div>
         </div>
+
         <div class="home-stat">
           <div class="home-stat__value">200+</div>
           <div class="home-stat__label">Produkte</div>
         </div>
+
         <div class="home-stat">
           <div class="home-stat__value">100%</div>
           <div class="home-stat__label">Regional</div>
         </div>
       </div>
-    </div>
 
+    </div>
   </div>
 </section>
 
 <section class="home-section">
+  {# Info-Section: erklärt den Ablauf in 3 Schritten. #}
+
   <h2 class="section-title">So funktioniert FoodLoop</h2>
   <p class="section-sub">In drei einfachen Schritten zu frischen Lebensmitteln aus deiner Region.</p>
 
   <div class="grid grid-3">
+    {# Grid mit 3 Karten (Steps). #}
+
     <div class="card home-step">
       <div class="home-step__title">1) Entdecken</div>
       <div class="home-step__text">Finde Produkte von Höfen und Gärtnern in deiner Nähe.</div>
@@ -69,17 +94,27 @@
   </div>
 </section>
 
-<!-- MAP SECTION -->
 <section class="home-map">
+  {# Kartenbereich: hier wird Leaflet gerendert (später Produzenten-Standorte). #}
+
   <div class="home-map__inner">
+    {# Container für Titel/Text + Map-Element. #}
+
     <h2 class="section-title">Karte</h2>
     <p class="section-sub">Hier werden später die Produzentenstandorte angezeigt.</p>
 
     <div id="homeMap" class="home-map__canvas" aria-label="Karte mit Produzenten"></div>
+    {# Wichtig: Das DIV ist die "Fläche", in die Leaflet die Karte zeichnet. #}
+    {# Ohne CSS-Höhe (z.B. height: 520px) bleibt die Karte unsichtbar/weiß. #}
   </div>
 </section>
 
-<!-- Leaflet JS + dein Map-Init Script -->
 <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+{# Leaflet JavaScript-Bibliothek (macht die Karte überhaupt möglich). #}
+
 <script defer src="{{ url_for('static', filename='js/home_map.js') }}"></script>
+{# Unser Map-Init Script: setzt View (z.B. Berlin), Tiles und Marker. #}
+{# defer sorgt dafür, dass das Script erst nach dem HTML geladen läuft. #}
+
 {% endblock %}
+{# Ende des Content-Blocks. #}
