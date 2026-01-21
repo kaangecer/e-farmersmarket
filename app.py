@@ -276,7 +276,7 @@ def business_account():
 def edit_producer_profile():
     producer = current_user.producer_profile
     if not producer:
-        return redirect(url_for("business_dashboard"))
+        return redirect(url_for("business_account"))
 
     form = EditProducerProfileForm(obj=producer)
     if form.validate_on_submit():
@@ -285,7 +285,7 @@ def edit_producer_profile():
         producer.contact_email = form.contact_email.data
         producer.contact_phone = form.contact_phone.data or None
         db.session.commit()
-        return redirect(url_for("business_dashboard"))
+        return redirect(url_for("business_account"))
 
     return render_template("edit_producer_profile.html", form=form)
 
@@ -339,7 +339,7 @@ def edit_address():
 def create_product():
     producer = current_user.producer_profile
     if not producer:
-        return redirect(url_for("business_dashboard"))
+        return redirect(url_for("business_account"))
 
     form = ProductForm()
     if form.validate_on_submit():
@@ -352,7 +352,7 @@ def create_product():
         )
         db.session.add(product)
         db.session.commit()
-        return redirect(url_for("business_dashboard"))
+        return redirect(url_for("business_account"))
 
     return render_template("product_form.html", form=form)
     
@@ -376,7 +376,7 @@ def edit_product(product_id):
         product.price = form.price.data
         product.is_active = form.is_active.data
         db.session.commit()
-        return redirect(url_for("business_dashboard"))
+        return redirect(url_for("business_account"))
 
     return render_template("product_form.html", form=form, product=product)
 
