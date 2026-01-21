@@ -3,45 +3,60 @@ body {
     margin: 0;
     background: #f5f5f5;
     color: #222;
-
     overflow-x: hidden;
 }
 
-header {
-    background: #ffffff;
-    color: #1f2a1f;
+/* DEFAULT: Header grün (für alle Seiten) */
+.site-header {
+    background: #0b7a4b;
+    color: white;
     padding: 1rem 2rem;
     display: flex;
     justify-content: space-between;
     align-items: center;
-
-    border-bottom: 1px solid #e6e6e6;
 }
 
-header nav {
+/* NAV Layout */
+.site-header nav {
     display: flex;
     align-items: center;
     gap: 1rem;
     flex-wrap: wrap;
 }
 
-header a {
-    color: #1f5b3a;
+/* Default Links im grünen Header */
+.site-header a {
+    color: white;
     text-decoration: none;
     font-weight: 600;
-    margin-left: 0;
 }
 
-header a:hover {
+.site-header a:hover {
     text-decoration: underline;
 }
 
+/* Logo standard (grün Header) */
 .logo {
-    font-weight: 900;
-    letter-spacing: 0.05em;
-    color: #1f5b3a;
-
     font-family: Georgia, "Times New Roman", Times, serif;
+    font-weight: 900;
+    font-size: 1.35rem;
+    letter-spacing: 0.02em;
+    color: white;
+}
+
+/* HOMEPAGE: Header weiß */
+.site-header.site-header--light {
+    background: #ffffff;
+    color: #1f2a1f;
+    border-bottom: 1px solid #e6e6e6;
+}
+
+.site-header.site-header--light a {
+    color: #1f5b3a;
+}
+
+.site-header.site-header--light .logo {
+    color: #1f5b3a;
 }
 
 footer {
