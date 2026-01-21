@@ -5,6 +5,9 @@ from werkzeug.security import generate_password_hash, check_password_hash
 from flask_login import LoginManager, login_user, login_required, logout_user, current_user
 
 
+# ------------------------------------------------------------
+# App-Setup: Flask + Login + DB
+# ------------------------------------------------------------
 app = Flask(__name__)
 login_manager = LoginManager(app)
 login_manager.login_view = "login"
@@ -16,30 +19,53 @@ print("DB URI:", app.config["SQLALCHEMY_DATABASE_URI"])
 
 db.init_app(app)
 
+
+# ------------------------------------------------------------
+# Login-Session: User anhand der gespeicherten user_id laden
+# ------------------------------------------------------------
 @login_manager.user_loader
 def load_user(user_id):
     return User.query.get(int(user_id))
 
+
+# ------------------------------------------------------------
+# Homepage: Startseite ausgeben
+# ------------------------------------------------------------
 @app.route("/")
 def home():
     return render_template("home.html")
 
+
+# ------------------------------------------------------------
+# Produkte: aktive Produkte + Kategorien laden und anzeigen
+# ------------------------------------------------------------
 @app.route("/products")
 def products():
     products = Product.query.filter_by(is_active=True).all()
     categories = Category.query.all()
     return render_template("products.html", products=products, categories=categories)
 
+
+# ------------------------------------------------------------
+# Produzenten: ProducerProfile laden und anzeigen
+# ------------------------------------------------------------
 @app.route("/producers")
 def producers():
     producers = ProducerProfile.query.all()
     return render_template("producers.html", producers=producers, current_zip="", current_type="")
 
 
+# ------------------------------------------------------------
+# Karte: Map-Seite anzeigen
+# ------------------------------------------------------------
 @app.route("/maps")
 def maps():
     return render_template("maps.html") 
 
+
+# ------------------------------------------------------------
+# Warenkorb: Formular anzeigen/validieren (Bestellung speichern folgt später)
+# ------------------------------------------------------------
 @app.route("/cart", methods=["GET", "POST"])
 def cart():
     form = CartForm()
@@ -59,12 +85,16 @@ def cart():
         city = form.city.data
         zip_code = form.zip_code.data
         payment_method = form.payment_method.data
+
     return render_template("cart.html", form=form, user_logged_in=user_logged_in)
 
+
+# ------------------------------------------------------------
+# Login/Signup (Customer): Step-Flow über Query-Parameter
+# ------------------------------------------------------------
 @app.route("/login", methods=["GET", "POST"])
 def login():
-
-    step = request.args.get("step", "email")  # "email", "password", or "signup"
+    step = request.args.get("step", "email")
     email = request.args.get("email", "").strip().lower()
 
     if step == "email":
@@ -83,9 +113,9 @@ def login():
         if form.validate_on_submit():
             password = form.password.data
             user = User.query.filter_by(email=email).first()
-            if user and check_password_hash(user.password_hash, password):  # placeholder!
+            if user and check_password_hash(user.password_hash, password):
                 login_user(user)
-                return redirect(url_for("home")) #when logged in, go to home
+                return redirect(url_for("home"))
             else:
                 form.password.errors.append("Falsches Passwort.")
         return render_template("login.html", step="password", email=email, form=form)
@@ -108,18 +138,21 @@ def login():
             db.session.add(user)
             db.session.commit()
 
-            customer_profile = CustomerProfile(
-                user_id=user.id
-            )
+            customer_profile = CustomerProfile(user_id=user.id)
             db.session.add(customer_profile)
             db.session.commit()
+
             login_user(user)
             return redirect(url_for("home"))
         return render_template("login.html", step="signup", email=email, form=form)
-    else:  # treat anything else as signup
-        form = SignupForm()
-        return render_template("login.html", step="signup", email=email, form=form)
 
+    form = SignupForm()
+    return render_template("login.html", step="signup", email=email, form=form)
+
+
+# ------------------------------------------------------------
+# Account (Customer): Profil, Adresse, Bestellungen anzeigen
+# ------------------------------------------------------------
 @app.route("/account")
 @login_required
 def account():
@@ -127,21 +160,30 @@ def account():
     profile = user.customer_profile
     address = profile.address if profile else None
     form = EditAddressForm(obj=address)
+
     if current_user.customer_profile:
         orders = current_user.customer_profile.orders.all()
     else:
         orders = []
+
     return render_template("account.html", user=user, orders=orders, address=address, form=form)
 
+
+# ------------------------------------------------------------
+# Logout
+# ------------------------------------------------------------
 @app.route("/logout", methods=["POST"])
 @login_required
 def logout():
     logout_user()
     return redirect(url_for("home"))
 
+
+# ------------------------------------------------------------
+# Business (Producer): Step-Flow wie beim Customer-Login
+# ------------------------------------------------------------
 @app.route("/business", methods=["GET", "POST"])
 def business():
-
     step = request.args.get("step", "landing")
     email = request.args.get("email", "").strip().lower()
 
@@ -163,7 +205,7 @@ def business():
             user = User.query.filter_by(email=email, role="PRODUCER").first()
             if user and check_password_hash(user.password_hash, password):
                 login_user(user)
-                return redirect(url_for("business_account")) #wenn loged in, switch to business dashboard
+                return redirect(url_for("business_account"))
             else:
                 form.password.errors.append("Falsches Passwort.")
         return render_template("business.html", step="password", email=email, form=form)
@@ -172,12 +214,15 @@ def business():
         form = SignupFormProducers()
         if form.validate_on_submit():
             user = User(
-                first_name = form.first_name.data,
-                last_name = form.last_name.data,
-                email = form.email.data.strip().lower(),
+                first_name=form.first_name.data,
+                last_name=form.last_name.data,
+                email=form.email.data.strip().lower(),
                 role="PRODUCER"
             )
+
+            # Passwort setzen (muss zur User-Klasse passen)
             user.set_password(form.password.data)
+
             db.session.add(user)
             db.session.flush()
 
@@ -191,39 +236,41 @@ def business():
             db.session.flush()
 
             producer_profile = ProducerProfile(
-                user_id = user.id,
-                address_id = address.address_id,
-                display_name = form.display_name.data,
-                legal_name = form.legal_name.data,
-                tax_id = form.tax_id.data,
-                contact_email = form.contact_email.data,
-                contact_phone = form.contact_phone.data
+                user_id=user.id,
+                address_id=address.address_id,
+                display_name=form.display_name.data,
+                legal_name=form.legal_name.data,
+                tax_id=form.tax_id.data,
+                contact_email=form.contact_email.data,
+                contact_phone=form.contact_phone.data
             )
             db.session.add(producer_profile)
-
             db.session.commit()
 
             login_user(user)
             return redirect(url_for("business_account"))
         
         return render_template("business.html", step="signup", email=email, form=form)
-    # else:  # treat anything else as signup
-    #     form = SignupForm()
-    # return render_template("business.html", step="signup", email=email, form=form)
 
 
+# ------------------------------------------------------------
+# Business Dashboard: Producer-Profil + Produkte anzeigen
+# ------------------------------------------------------------
 @app.route("/business/account")
 @login_required
 def business_account():
     producer = current_user.producer_profile
     if not producer:
-        return redirect(url_for("business"), step = "signup", email=current_user.email)
+        return redirect(url_for("business"), step="signup", email=current_user.email)
+
     products = producer.products.all()
-
     orders = []
-
     return render_template("business_account.html", producer=producer, products=products, orders=orders)
 
+
+# ------------------------------------------------------------
+# Producer Profil bearbeiten
+# ------------------------------------------------------------
 @app.route("/business/profile/edit", methods=["GET", "POST"])
 @login_required
 def edit_producer_profile():
@@ -242,6 +289,10 @@ def edit_producer_profile():
 
     return render_template("edit_producer_profile.html", form=form)
 
+
+# ------------------------------------------------------------
+# Adresse bearbeiten (Customer oder Producer)
+# ------------------------------------------------------------
 @app.route("/address/edit", methods=["GET", "POST"])
 @login_required
 def edit_address():
@@ -258,15 +309,13 @@ def edit_address():
     
     address = profile.address
 
-    # falls addresse nicht existiert, erstelle eine
     if address is None:
         address = Address(street="", zip="", city="", country="")
         db.session.add(address)
-        db.session.flush()           # erzeugt address.address_id
-        profile.address = address    # setzt profile.address_id
+        db.session.flush()
+        profile.address = address
         db.session.commit()
 
-    #wenn adresse besteht, aber geandert werden mochte
     form = EditAddressForm()
 
     if form.validate_on_submit():
@@ -281,6 +330,10 @@ def edit_address():
 
     return render_template(f"{back_endpoint}.html", form=form, address=address)
 
+
+# ------------------------------------------------------------
+# Produkt anlegen (Producer)
+# ------------------------------------------------------------
 @app.route("/business/products/new", methods=["GET", "POST"])
 @login_required
 def create_product():
@@ -304,6 +357,9 @@ def create_product():
     return render_template("product_form.html", form=form)
     
 
+# ------------------------------------------------------------
+# Produkt bearbeiten (Producer)
+# ------------------------------------------------------------
 @app.route("/business/products/<int:product_id>/edit", methods=["GET", "POST"])
 @login_required
 def edit_product(product_id):
@@ -324,6 +380,10 @@ def edit_product(product_id):
 
     return render_template("product_form.html", form=form, product=product)
 
+
+# ------------------------------------------------------------
+# Order-Detail (Producer)
+# ------------------------------------------------------------
 @app.route("/business/orders/<int:order_id>")
 @login_required
 def business_order_detail(order_id):
@@ -331,6 +391,10 @@ def business_order_detail(order_id):
     order = Order.query.get_or_404(order_id)
     return render_template("business_order_detail.html", order=order)
 
+
+# ------------------------------------------------------------
+# Account löschen
+# ------------------------------------------------------------
 @app.route("/delete_account", methods=["POST"])
 @login_required
 def delete_account():
@@ -340,7 +404,6 @@ def delete_account():
     db.session.commit()
     
     logout_user()
-    
     return redirect(url_for("home"))
 
 
