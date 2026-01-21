@@ -59,6 +59,7 @@ def cart():
         city = form.city.data
         zip_code = form.zip_code.data
         payment_method = form.payment_method.data
+
         return redirect(url_for("home"))
     
     return render_template("cart.html", form=form, user_logged_in=user_logged_in)
@@ -86,9 +87,9 @@ def login():
         if form.validate_on_submit():
             password = form.password.data
             user = User.query.filter_by(email=email).first()
-            if user and check_password_hash(user.password_hash, password):  # placeholder!
+            if user and check_password_hash(user.password_hash, password):
                 login_user(user)
-                return redirect(url_for("home")) #when logged in, go to home
+                return redirect(url_for("home"))
             else:
                 form.password.errors.append("Falsches Passwort.")
         return render_template("login.html", step="password", email=email, form=form)
@@ -111,11 +112,10 @@ def login():
             db.session.add(user)
             db.session.commit()
 
-            customer_profile = CustomerProfile(
-                user_id=user.id
-            )
+            customer_profile = CustomerProfile(user_id=user.id)
             db.session.add(customer_profile)
             db.session.commit()
+
             login_user(user)
             return redirect(url_for("home"))
         return render_template("login.html", step="signup", email=email, form=form)
@@ -130,10 +130,12 @@ def account():
     profile = user.customer_profile
     address = profile.address if profile else None
     form = EditAddressForm(obj=address)
+
     if current_user.customer_profile:
         orders = current_user.customer_profile.orders.all()
     else:
         orders = []
+
     return render_template("account.html", user=user, orders=orders, address=address, form=form)
 
 @app.route("/logout", methods=["POST"])
@@ -144,7 +146,6 @@ def logout():
 
 @app.route("/business", methods=["GET", "POST"])
 def business():
-
     step = request.args.get("step", "landing")
     email = request.args.get("email", "").strip().lower()
 
@@ -181,6 +182,7 @@ def business():
                 role="PRODUCER"
             )
             user.set_password(form.password.data)
+
             db.session.add(user)
             db.session.flush()
 
@@ -203,7 +205,6 @@ def business():
                 contact_phone = form.contact_phone.data
             )
             db.session.add(producer_profile)
-
             db.session.commit()
 
             login_user(user)
@@ -220,11 +221,10 @@ def business():
 def business_account():
     producer = current_user.producer_profile
     if not producer:
-        return redirect(url_for("business"), step = "signup", email=current_user.email)
+        return redirect(url_for("business"), step="signup", email=current_user.email)
+
     products = producer.products.all()
-
     orders = []
-
     return render_template("business_account.html", producer=producer, products=products, orders=orders)
 
 @app.route("/business/profile/edit", methods=["GET", "POST"])
@@ -343,7 +343,6 @@ def delete_account():
     db.session.commit()
     
     logout_user()
-    
     return redirect(url_for("home"))
 
 
