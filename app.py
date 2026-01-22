@@ -228,7 +228,7 @@ def business():
     # return render_template("business.html", step="signup", email=email, form=form)
 
 
-# Business Dashboard: Producer-Profil + Produkte anzeigen
+# business settings: Producer-Profil + Produkte anzeigen
 @app.route("/business/account")
 @login_required
 def business_account():
@@ -241,17 +241,16 @@ def business_account():
     return render_template("business_account.html", producer=producer, products=products, orders=orders)
 
 
-# ------------------------------------------------------------
-# Producer Profil bearbeiten
-# ------------------------------------------------------------
+
+# producer profil bearbeiten
 @app.route("/business/profile/edit", methods=["GET", "POST"])
 @login_required
 def edit_producer_profile():
-    producer = current_user.producer_profile
+    producer = current_user.producer_profile #get current user's producer profile
     if not producer:
         return redirect(url_for("business_account"))
 
-    form = EditProducerProfileForm(obj=producer)
+    form = EditProducerProfileForm(obj=producer) #populate form with object, existing data
     if form.validate_on_submit():
         producer.display_name = form.display_name.data
         producer.legal_name = form.legal_name.data or None
@@ -263,9 +262,8 @@ def edit_producer_profile():
     return render_template("edit_producer_profile.html", form=form)
 
 
-# ------------------------------------------------------------
-# Adresse bearbeiten (Customer oder Producer)
-# ------------------------------------------------------------
+
+# adresse bearbeiten (Customer oder Producer)
 @app.route("/address/edit", methods=["GET", "POST"])
 @login_required
 def edit_address():
@@ -306,9 +304,8 @@ def edit_address():
     return render_template(f"{back_endpoint}.html", form=form, address=address)
 
 
-# ------------------------------------------------------------
+
 # Produkt anlegen (Producer)
-# ------------------------------------------------------------
 @app.route("/business/products/new", methods=["GET", "POST"])
 @login_required
 def create_product():
@@ -332,9 +329,8 @@ def create_product():
     return render_template("product_form.html", form=form)
     
 
-# ------------------------------------------------------------
+
 # Produkt bearbeiten (Producer)
-# ------------------------------------------------------------
 @app.route("/business/products/<int:product_id>/edit", methods=["GET", "POST"])
 @login_required
 def edit_product(product_id):
@@ -356,20 +352,18 @@ def edit_product(product_id):
     return render_template("product_form.html", form=form, product=product)
 
 
-# ------------------------------------------------------------
+
 # Order-Detail (Producer)
-# ------------------------------------------------------------
 @app.route("/business/orders/<int:order_id>")
 @login_required
 def business_order_detail(order_id):
     producer = current_user.producer_profile
     order = Order.query.get_or_404(order_id)
-    return render_template("business_order_detail.html", order=order)
+    return render_template("business_order_detail.html", producer=producer, order=order)
 
 
-# ------------------------------------------------------------
-# Account löschen
-# ------------------------------------------------------------
+
+# Account löschen (Customer oder Producer)
 @app.route("/delete_account", methods=["POST"])
 @login_required
 def delete_account():
