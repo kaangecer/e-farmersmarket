@@ -8,12 +8,12 @@ from flask_login import LoginManager, login_user, login_required, logout_user, c
 
 app = Flask(__name__)
 login_manager = LoginManager(app)
-login_manager.login_view = "login"
+login_manager.login_view = "login" # redirect unauthenticated users when accessing protected routes 
 
-app.config["SECRET_KEY"] = "dev-secret-change-me"
+app.config["SECRET_KEY"] = "dev-secret-change-me" # for session management, cryptographic key
 app.config["SQLALCHEMY_DATABASE_URI"] = "sqlite:///farmersmarket.db"
-app.config["SQLALCHEMY_TRACK_MODIFICATIONS"] = False
-print("DB URI:", app.config["SQLALCHEMY_DATABASE_URI"])
+app.config["SQLALCHEMY_TRACK_MODIFICATIONS"] = False # efficency feature
+print("DB URI:", app.config["SQLALCHEMY_DATABASE_URI"]) # simple terminal debugging feature
 
 db.init_app(app)
 
