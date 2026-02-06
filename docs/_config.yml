@@ -1,5 +1,6 @@
-title: Project Name
+title: Food Loop
 remote_theme: just-the-docs/just-the-docs
+theme: jekyll-theme-slate
 mermaid:
   version: "10.9.0" # Pick version from https://cdn.jsdelivr.net/npm/mermaid/
 callouts:
