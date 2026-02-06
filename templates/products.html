@@ -18,7 +18,7 @@
                 {% for c in categories %}
                 <option value="{{ c.name }}" {% if current_category==c.name %}selected{% endif %}>
                     {{ c.name }}
-                    </option>
+                </option>
                 {% endfor %}
             </select>
             <label>
@@ -32,18 +32,18 @@
 
     <div class="grid">
         {% if products %}
-            {% for p in products %}
-                <div class="card">
-                    <h3>{{ p.name }}</h3>
-                    <p><strong>Kategorie:</strong> {{ p.category }}</p>
-                    <p><strong>Preis:</strong> {{ "%.2f"|format(p.price) }} €</p>
-                    <p><strong>PLZ:</strong> {{ p.zip }}</p>
-                    <p><strong>Bio:</strong> {{ "Ja" if p.bio else "Nein" }}</p>
-                    <p style="margin-top:0.5rem;">
-                        <a href="{{ url_for('producers') }}?id={{ p.producer_id }}">
-                            Produzent anzeigen
-                        </a>
-                    </p>
+        {% for p in products %}
+        <div class="card">
+            <h3>{{ p.name }}</h3>
+            <p><strong>Kategorie:</strong> {{ p.category }}</p>
+            <p><strong>Preis:</strong> {{ "%.2f"|format(p.price) }} €</p>
+            <p><strong>PLZ:</strong> {{ p.zip }}</p>
+            <p><strong>Bio:</strong> {{ "Ja" if p.bio else "Nein" }}</p>
+            <p style="margin-top:0.5rem;">
+                <a href="{{ url_for('producers') }}?id={{ p.producer_id }}">
+                    Produzent anzeigen
+                </a>
+            </p>
             <form class="inline-form add-to-cart-form" data-product-id="{{ p.product_id }}">
                 <input type="number" name="quantity" value="1" min="1" style="max-width:80px;">
                 <button type="button" class="btn btn-primary add-to-cart-btn">
@@ -51,12 +51,12 @@
                 </button>
             </form>
 
-                </div>
-            {% endfor %}
+        </div>
+        {% endfor %}
         {% else %}
-            <div class="card">
-                <p>Keine Produkte gefunden. Passe deine Filter an.</p>
-            </div>
+        <div class="card">
+            <p>Keine Produkte gefunden. Passe deine Filter an.</p>
+        </div>
         {% endif %}
     </div>
 </section>
