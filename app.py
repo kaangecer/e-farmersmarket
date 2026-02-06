@@ -236,8 +236,8 @@ def account():
     address = profile.address if profile else None
     form = EditAddressForm(obj=address)
 
-    if current_user.customer_profile:
-        orders = current_user.customer_profile.orders.all()
+    if profile:
+        orders = profile.orders.options(db.joinedload(Order.items).joinedload(OrderItem.product)).all()
     else:
         orders = []
 
