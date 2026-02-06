@@ -36,7 +36,7 @@
             {% for product in products %}
             <tr>
               <td>{{ product.name }}</td>
-              <td>{{ "%.2f"|format(product.price) }} â‚¬</td>
+              <td>{{ "%.2f"|format(product.price) }} €</td>
               <td>{{ "Aktiv" if product.is_active else "Inaktiv" }}</td>
               <td class="text-end">
                 <a class="btn btn-sm btn-outline-primary" href="{{ url_for('edit_product', product_id=product.product_id) }}">Bearbeiten</a>

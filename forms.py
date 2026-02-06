@@ -115,6 +115,11 @@ class SignupFormProducers(FlaskForm):
     submit = SubmitField("Als Produzent registrieren")
 
 class ProductForm(FlaskForm):
+    category_id = SelectField(
+        "Kategorie",
+        coerce=int,
+        validators=[InputRequired("Bitte eine Kategorie auswählen.")],
+    )
     name = StringField(
         "Produktname",
         validators=[InputRequired(), Length(min=2, max=255)],

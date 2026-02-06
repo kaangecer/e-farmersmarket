@@ -398,7 +398,7 @@ def edit_producer_profile():
 def edit_address():
     if current_user.role == "PRODUCER":
         profile = current_user.producer_profile
-        back_endpoint = "business"
+        back_endpoint = "business_account"
     else:
         profile = current_user.customer_profile
         back_endpoint = "account"
@@ -430,7 +430,7 @@ def edit_address():
     
         return redirect(url_for(back_endpoint))
 
-    return render_template(f"{back_endpoint}.html", form=form, address=address)
+    return render_template("edit_address.html", form=form, address=address, back_url=url_for(back_endpoint))
 
 
 
@@ -443,8 +443,11 @@ def create_product():
         return redirect(url_for("business_account"))
 
     form = ProductForm()
+    categories = Category.query.order_by(Category.name).all()
+    form.category_id.choices = [(c.category_id, c.name) for c in categories]
     if form.validate_on_submit():
         product = Product(
+            category_id=form.category_id.data,
             name=form.name.data,
             description=form.description.data,
             price=form.price.data,
@@ -465,12 +468,17 @@ def create_product():
 def edit_product(product_id):
     producer = current_user.producer_profile
     product = Product.query.filter_by(
-        id=product_id,
+        product_id=product_id,
         producer_id=producer.producer_id
     ).first_or_404()
 
     form = ProductForm(obj=product)
+    categories = Category.query.order_by(Category.name).all()
+    form.category_id.choices = [(c.category_id, c.name) for c in categories]
+    if request.method == "GET":
+        form.category_id.data = product.category_id
     if form.validate_on_submit():
+        product.category_id = form.category_id.data
         product.name = form.name.data
         product.description = form.description.data
         product.price = form.price.data
