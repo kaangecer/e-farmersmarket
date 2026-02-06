@@ -34,6 +34,27 @@ def products():
     categories = Category.query.all()
     return render_template("products.html", products=products, categories=categories)
 
+@app.post("/cart/add-json")
+def add_to_cart_json():
+    data = request.get_json(silent=True)
+    app.logger.info("ADD_TO_CART_JSON payload: %r", data)
+
+    product_id = str(data.get("product_id"))
+    quantity = int(data.get("quantity", 1))
+
+    if not product_id:
+        return jsonify({"ok": False, "error": "Missing product_id"}), 400
+
+    cart = get_cart()
+    cart[product_id] = cart.get(product_id, 0) + quantity
+    save_cart(cart)
+
+    app.logger.info("Cart after add: %r", cart)
+
+    total_items = sum(cart.values())
+    return jsonify({"ok": True, "total_items": total_items})
+
+
 # produzenten: ProducerProfile anzeigen von Producer table
 @app.route("/producers")
 def producers():
