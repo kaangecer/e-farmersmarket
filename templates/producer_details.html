@@ -1,0 +1,30 @@
+{% extends "base.html" %}
+
+{% block title %}{{ producer.display_name }} – FoodLoop{% endblock %}
+
+{% block content %}
+<section>
+  <h1>{{ producer.display_name }}</h1>
+  <p><strong>Inhaber:</strong> {{ producer.user.first_name }} {{ producer.user.last_name }}</p>
+  <p><strong>E-Mail:</strong> {{ producer.contact_email }}</p>
+  {% if producer.contact_phone %}
+    <p><strong>Telefon:</strong> {{ producer.contact_phone }}</p>
+  {% endif %}
+  {% if producer.address %}
+    <p><strong>Adresse:</strong>
+      {{ producer.address.street }}, {{ producer.address.zip }} {{ producer.address.city }},
+      {{ producer.address.country }}
+    </p>
+  {% endif %}
+
+  <h2>Produkte</h2>
+  <ul>
+    {% for product in producer.products %}
+      <li>{{ product.name }} – {{ "%.2f"|format(product.price) }} €</li>
+    {% endfor %}
+  </ul>
+
+  <h2>Beiträge</h2>
+  <p>Hier können später Posts/Ankündigungen des Betriebs angezeigt werden.</p>
+</section>
+{% endblock %}

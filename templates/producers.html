@@ -13,8 +13,11 @@
         {% if producers %}
             {% for prod in producers %}
                 <div class="card">
-                    <h3>{{ prod.display_name }}</h3>
-
+                    <h3>
+                        <a href="{{ url_for('producer_detail', producer_id=prod.producer_id) }}">
+                            {{ prod.display_name }}
+                        </a>
+                    </h3>
                     <p><strong>Kontakt:</strong> {{ prod.contact_email }}</p>
 
                     <p>

@@ -35,14 +35,17 @@
         {% for p in products %}
         <div class="card">
             <h3>{{ p.name }}</h3>
-            <p><strong>Kategorie:</strong> {{ p.category }}</p>
+            <p><strong>Kategorie:</strong> {{ p.category.name }}</p>
             <p><strong>Preis:</strong> {{ "%.2f"|format(p.price) }} €</p>
             <p><strong>PLZ:</strong> {{ p.zip }}</p>
             <p><strong>Bio:</strong> {{ "Ja" if p.bio else "Nein" }}</p>
             <p style="margin-top:0.5rem;">
-                <a href="{{ url_for('producers') }}?id={{ p.producer_id }}">
+                <button
+                    type="button"
+                    class="btn btn-link p-0 show-producer-btn"
+                    data-producer-id="{{ p.producer_id }}">
                     Produzent anzeigen
-                </a>
+                </button>
             </p>
             <form class="inline-form add-to-cart-form" data-product-id="{{ p.product_id }}">
                 <input type="number" name="quantity" value="1" min="1" style="max-width:80px;">
@@ -60,6 +63,22 @@
         {% endif %}
     </div>
 </section>
+<div class="modal fade" id="producerModal" tabindex="-1" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="producerModalLabel">Produzent</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Schließen"></button>
+      </div>
+      <div class="modal-body">
+        <p><strong>Name:</strong> <span id="producer-name"></span></p>
+        <p><strong>E-Mail:</strong> <span id="producer-email"></span></p>
+        <p><strong>Adresse:</strong> <span id="producer-address"></span></p>
+      </div>
+    </div>
+  </div>
+</div>
+
 <script>
     document.addEventListener("DOMContentLoaded", () => {
         const forms = document.querySelectorAll(".add-to-cart-form");
@@ -98,6 +117,28 @@
                 }
             });
         });
+    const producerButtons = document.querySelectorAll(".show-producer-btn");
+    const producerModalEl = document.getElementById("producerModal");
+
+    producerButtons.forEach(btn => {
+        btn.addEventListener("click", async () => {
+            const producerId = btn.dataset.producerId;
+
+            try {
+                const resp = await fetch(`/producer/${producerId}/json`);
+                const data = await resp.json();
+
+                document.getElementById("producer-name").textContent = data.display_name;
+                document.getElementById("producer-email").textContent = data.contact_email;
+                document.getElementById("producer-address").textContent = data.address;
+
+                const modal = new bootstrap.Modal(producerModalEl);
+                modal.show();
+            } catch (e) {
+                console.error(e);
+            }
+        });
     });
+});
 </script>
 {% endblock %}
