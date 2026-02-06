@@ -27,10 +27,8 @@
     margin-bottom: 1.5rem;
 }
 
-input,
-select {
-    padding: 0.5rem 0.7rem;
-    border-radius: 999px;
-    border: 1px solid #ccc;
-    font: inherit;
+/* Inline forms (filters etc.) */
+form.inline-form > * {
+  margin-right: 0.5rem;
+  margin-bottom: 0.5rem;
 }

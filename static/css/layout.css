@@ -1,41 +1,102 @@
-main {
-    max-width: 1100px;
-    margin: 2rem auto;
-    padding: 0 1rem 3rem;
+/* Header */
+.site-header {
+  background: #0b7a4b;
+  color: white;
+  padding: 1rem 2rem;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
 }
 
+.site-header nav {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  flex-wrap: wrap;
+}
+
+.site-header a {
+  color: white;
+  text-decoration: none;
+  font-weight: 600;
+}
+
+.site-header a:hover {
+  text-decoration: underline;
+}
+
+/* Logo */
+.logo {
+  font-family: Georgia, "Times New Roman", Times, serif;
+  font-weight: 900;
+  font-size: 1.35rem;
+  letter-spacing: 0.02em;
+  color: white;
+}
+
+/* Light header variant (homepage) */
+.site-header.site-header--light {
+  background: #ffffff;
+  color: #1f2a1f;
+  border-bottom: 1px solid #e6e6e6;
+}
+
+.site-header.site-header--light a {
+  color: #1f5b3a;
+}
+
+.site-header.site-header--light .logo {
+  color: #1f5b3a;
+}
+
+/* Main content container */
+main {
+  max-width: 1100px;
+  margin: 2rem auto;
+  padding: 0 1rem 3rem;
+}
+
+/* Full-width pages (e.g. home hero) */
+main.main--full {
+  max-width: none;
+  margin: 0;
+  padding: 0;
+}
+
+/* Footer */
+footer {
+  text-align: center;
+  padding: 1.5rem 1rem;
+  color: #777;
+  border-top: 1px solid #ddd;
+  font-size: 0.85rem;
+}
+
+/* Grid helpers */
 .grid {
-    display: grid;
-    gap: 1.5rem;
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+  gap: 1.5rem;
+  max-width: 1100px; /* optional: constrain overall width */
+  margin: 0 auto;    /* center the grid */
 }
 
 @media (min-width: 768px) {
-    .grid-2 {
-        grid-template-columns: repeat(2, minmax(0, 1fr));
-    }
-    .grid-3 {
-        grid-template-columns: repeat(3, minmax(0, 1fr));
-    }
+  .grid-2 {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+  .grid-3 {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+  }
 }
 
+/* Section headings */
 .section-title {
-    font-size: 1.4rem;
-    margin-bottom: 0.5rem;
+  font-size: 1.4rem;
+  margin-bottom: 0.5rem;
 }
 
 .section-sub {
-    color: #555;
-    margin-bottom: 1.5rem;
-}
-
-form.inline-form > * {
-    margin-right: 0.5rem;
-    margin-bottom: 0.5rem;
-}
-
-/* Full width main for specific pages (e.g. homepage) */
-main.main--full {
-    max-width: none;
-    margin: 0;
-    padding: 0;
+  color: #555;
+  margin-bottom: 1.5rem;
 }

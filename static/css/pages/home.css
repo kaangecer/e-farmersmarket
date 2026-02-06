@@ -1,16 +1,11 @@
-/* Full-width Hero Banner */
-
+/* Hero */
 .home-hero {
   background: #1f5b3a;
   color: #ffffff;
-
-  /* oben normal, unten größer */
   padding: 5rem 0 8rem;
-
   text-align: center;
   border-radius: 0;
 
-  /* FULL WIDTH: bricht aus dem main/max-width aus */
   width: 100vw;
   position: relative;
   left: 50%;
@@ -41,7 +36,7 @@
   color: rgba(255, 255, 255, 0.82);
 }
 
-/* Buttons zentrieren */
+/* Hero actions */
 .home-hero__actions {
   display: flex;
   justify-content: center;
@@ -61,7 +56,7 @@
   border: 2px solid rgba(255, 255, 255, 0.7);
 }
 
-/* Stats darunter, nebeneinander und zentriert */
+/* Hero stats */
 .home-hero__stats {
   display: flex;
   justify-content: center;
@@ -86,10 +81,7 @@
   color: rgba(255, 255, 255, 0.75);
 }
 
-/* =========================
-   Section nach dem Banner
-   ========================= */
-
+/* Section after hero */
 .home-section {
   margin-top: 4rem;
   max-width: 1100px;
@@ -109,23 +101,7 @@
   line-height: 1.55;
 }
 
-/* =========================
-   Responsive
-   ========================= */
-
-@media (max-width: 600px) {
-  .home-hero {
-    padding: 4rem 0 6rem;
-  }
-
-  .home-hero__title {
-    font-size: 2.5rem;
-  }
-
-  .home-hero__stats {
-    gap: 1.5rem;
-  }
-}
+/* Home map teaser */
 .home-map {
   padding: 3rem 0 4rem;
   background: #f5f5f5;
@@ -143,4 +119,19 @@
   overflow: hidden;
   background: #e9ecef;
   box-shadow: 0 8px 20px rgba(0,0,0,0.06);
+}
+
+/* Responsive */
+@media (max-width: 600px) {
+  .home-hero {
+    padding: 4rem 0 6rem;
+  }
+
+  .home-hero__title {
+    font-size: 2.5rem;
+  }
+
+  .home-hero__stats {
+    gap: 1.5rem;
+  }
 }
