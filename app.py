@@ -70,27 +70,101 @@ def maps():
 @app.route("/cart", methods=["GET", "POST"])
 def cart():
     form = CartForm()
-    
-    user_logged_in = current_user.is_authenticated #ist user eingeloggt?
+    user_logged_in = current_user.is_authenticated
 
-    if request.method == "GET" and user_logged_in: #
+    # Prefill form for logged-in users
+    if request.method == "GET" and user_logged_in:
         form.email.data = current_user.email
         form.first_name.data = current_user.first_name
         form.last_name.data = current_user.last_name
+       
+        profile = current_user.customer_profile
+        addr = profile.address if profile else None
 
-    # wenn Formular abgeschickt wird
-    if form.validate_on_submit(): 
-        email = form.email.data
-        first_name = form.first_name.data
-        last_name = form.last_name.data
-        address = form.address.data
-        city = form.city.data
-        zip_code = form.zip_code.data
-        payment_method = form.payment_method.data
+        if addr:
+            form.address.data = addr.street
+            form.city.data = addr.city
+            form.zip_code.data = addr.zip
 
-        return redirect(url_for("home"))
-    
-    return render_template("cart.html", form=form, user_logged_in=user_logged_in)
+            
+    # Build cart items from session for display
+    cart_data = get_cart()
+    items = []
+    total = Decimal("0.00")
+
+    if cart_data:
+        product_ids = [int(pid) for pid in cart_data.keys()]
+        products = Product.query.filter(Product.product_id.in_(product_ids)).all()
+        for p in products:
+            qty = cart_data.get(str(p.product_id), 0)
+            line_total = p.price * qty
+            total += line_total
+            items.append({"product": p, "qty": qty, "line_total": line_total})
+
+    # Handle form submit (checkout)
+    if form.validate_on_submit():
+        # ensure we have a logged in customer
+        if not current_user.is_authenticated or current_user.customer_profile is None:
+            return redirect(url_for("login", step="email", email=form.email.data))
+
+        customer = current_user.customer_profile
+
+        # rebuild from session to be safe
+        cart_data = get_cart()
+        if not cart_data:
+            return redirect(url_for("cart"))
+
+        product_ids = [int(pid) for pid in cart_data.keys()]
+        products = Product.query.filter(Product.product_id.in_(product_ids)).all()
+
+        order_total = Decimal("0.00")
+        new_order = Order(
+            customer_id=customer.customer_id,
+            total_amount=Decimal("0.00"),  # set after items
+        )
+        db.session.add(new_order)
+        db.session.flush()  # ensures new_order.order_id is available
+
+        for p in products:
+            qty = cart_data.get(str(p.product_id), 0)
+            if qty <= 0:
+                continue
+
+            line_total = p.price * qty
+            order_total += line_total
+
+            item = OrderItem(
+                order_id=new_order.order_id,
+                product_id=p.product_id,
+                producer_id=p.producer_id,   # important for your model
+                quantity=qty,
+                unit_price=p.price,
+                line_total=line_total,
+            )
+            db.session.add(item)
+
+        new_order.total_amount = order_total
+        db.session.commit()
+
+        # clear cart after successful order
+        save_cart({})
+
+        return redirect(url_for("account"))
+
+    return render_template(
+        "cart.html",
+        form=form,
+        user_logged_in=user_logged_in,
+        items=items,
+        total=total,
+    )
+
+def get_cart():
+    return session.get("cart", {})  # {"product_id": quantity}
+
+def save_cart(cart):
+    session["cart"] = cart
+    session.modified = True
 
 
 
