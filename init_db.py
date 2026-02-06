@@ -1,11 +1,11 @@
+# reset_schema.py
 from app import app, db
-from datetime import datetime
-from decimal import Decimal
-from models import (
-    User, Address, CustomerProfile, ProducerProfile, Category, Product, Cart, Order, OrderItem, CartItem)
+from models import *  # ensure models are imported so tables are registered
 
 with app.app_context():
-    print("Creating database tables...")
+    print("Dropping all tables...")
+    db.drop_all()
+    print("Creating all tables from current models...")
     db.create_all()
     db.session.commit()
-    print("Done")
+    print("Done.")
