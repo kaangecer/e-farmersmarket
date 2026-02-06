@@ -11,10 +11,8 @@
 
     <div class="card">
         <form method="get" class="inline-form">
-            <input type="text" name="q" placeholder="Suche nach Produktname"
-                   value="{{ current_query }}">
-            <input type="text" name="zip" placeholder="PLZ"
-                   value="{{ current_zip }}" style="max-width:120px;">
+            <input type="text" name="q" placeholder="Suche nach Produktname" value="{{ current_query }}">
+            <input type="text" name="zip" placeholder="PLZ" value="{{ current_zip }}" style="max-width:120px;">
             <select name="category">
                 <option value="">Kategorie wählen</option>
                 {% for c in categories %}
@@ -24,8 +22,7 @@
                 {% endfor %}
             </select>
             <label>
-                <input type="checkbox" name="bio"
-                       {% if current_bio %}checked{% endif %}>
+                <input type="checkbox" name="bio" {% if current_bio %}checked{% endif %}>
                 Nur Bio
             </label>
             <button class="btn btn-primary" type="submit">Filtern</button>
