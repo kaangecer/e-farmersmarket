@@ -11,11 +11,6 @@
 {% block main_class %}main--full{% endblock %}
 {# Homepage nutzt ein full-width Layout für den Hero-Bereich. #}
 
-{% block extra_head %}
-<link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css">
-{# Leaflet CSS für die Karte (damit Tiles/Marker korrekt gestylt sind). #}
-{% endblock %}
-
 {% block content %}
 {# Inhalt der Seite beginnt hier. #}
 
@@ -95,26 +90,33 @@
 </section>
 
 <section class="home-map">
-  {# Kartenbereich: hier wird Leaflet gerendert (später Produzenten-Standorte). #}
-
   <div class="home-map__inner">
-    {# Container für Titel/Text + Map-Element. #}
-
     <h2 class="section-title">Karte</h2>
-    <p class="section-sub">Hier werden später die Produzentenstandorte angezeigt.</p>
+    <p class="section-sub">Produzenten in Berlin/brandenburg</p>
 
-    <div id="homeMap" class="home-map__canvas" aria-label="Karte mit Produzenten"></div>
-    {# Wichtig: Das DIV ist die "Fläche", in die Leaflet die Karte zeichnet. #}
-    {# Ohne CSS-Höhe (z.B. height: 520px) bleibt die Karte unsichtbar/weiß. #}
+    <div class="map-shot map-shot--markers" aria-label="Berlin Karte mit Produzenten">
+      <img
+        class="map-shot__img"
+        src="{{ url_for('static', filename='image/berlin_map.png') }}"
+        alt="Berlin Karte"
+        loading="lazy"
+      />
+
+      {% for pin in map_pins %}
+      <a
+        class="map-pin map-pin--{{ pin.color }}"
+        style="left: {{ pin.x }}%; top: {{ pin.y }}%;"
+        href="{{ url_for('producers') }}"
+        aria-label="{{ pin.label }}"
+      >
+        <span class="map-pin__dot"></span>
+        <span class="map-pin__tip">{{ pin.label }}</span>
+      </a>
+      {% endfor %}
+    </div>
+
   </div>
 </section>
-
-<script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
-{# Leaflet JavaScript-Bibliothek (macht die Karte überhaupt möglich). #}
-
-<script defer src="{{ url_for('static', filename='js/home_map.js') }}"></script>
-{# Unser Map-Init Script: setzt View (z.B. Berlin), Tiles und Marker. #}
-{# defer sorgt dafür, dass das Script erst nach dem HTML geladen läuft. #}
 
 {% endblock %}
 {# Ende des Content-Blocks. #}

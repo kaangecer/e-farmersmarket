@@ -101,7 +101,7 @@
   line-height: 1.55;
 }
 
-/* Home map teaser */
+/* Home map */
 .home-map {
   padding: 3rem 0 4rem;
   background: #f5f5f5;
@@ -113,13 +113,66 @@
   padding: 0 1rem;
 }
 
-.home-map__canvas {
-  height: 520px;
+.map-shot {
   border-radius: 16px;
   overflow: hidden;
-  background: #e9ecef;
+  background: #ffffff;
   box-shadow: 0 8px 20px rgba(0,0,0,0.06);
 }
+
+.map-shot__img {
+  width: 100%;
+  height: auto;
+  display: block;
+}
+
+.map-shot--markers {
+  position: relative;
+}
+
+.map-pin {
+  position: absolute;
+  transform: translate(-50%, -50%);
+  text-decoration: none;
+}
+
+.map-pin__dot {
+  width: 26px;
+  height: 26px;
+  border-radius: 999px;
+  display: block;
+  box-shadow: 0 8px 18px rgba(0,0,0,0.25);
+  outline: 4px solid rgba(255,255,255,0.75);
+}
+
+.map-pin--green .map-pin__dot { background: #1f7a3a; }
+.map-pin--yellow .map-pin__dot { background: #f4cf63; }
+.map-pin--red .map-pin__dot { background: #e84d5b; }
+
+.map-pin:hover .map-pin__dot {
+  transform: scale(1.15);
+}
+
+.map-pin__tip {
+  position: absolute;
+  left: 24px;
+  top: 50%;
+  transform: translateY(-50%);
+  background: #ffffff;
+  color: #1f2a1f;
+  padding: 6px 10px;
+  border-radius: 999px;
+  font-size: 0.9rem;
+  white-space: nowrap;
+  box-shadow: 0 10px 20px rgba(0,0,0,0.12);
+  opacity: 0;
+  pointer-events: none;
+}
+
+.map-pin:hover .map-pin__tip {
+  opacity: 1;
+}
+
 
 /* Responsive */
 @media (max-width: 600px) {
@@ -134,4 +187,5 @@
   .home-hero__stats {
     gap: 1.5rem;
   }
+
 }
