@@ -1,6 +1,8 @@
-from flask import Flask, redirect, render_template, request, url_for
+from decimal import Decimal
+import profile
+from flask import Flask, jsonify, redirect, render_template, request, session, url_for
 from forms import EditAddressForm, EditProducerProfileForm, EmailOnlyLoginForm , PasswordOnlyLoginForm, ProductForm, SignupForm, CartForm, SignupFormProducers
-from models import Address, Category, CustomerProfile, Order, ProducerProfile, Product, User, db
+from models import Address, Category, CustomerProfile, Order, OrderItem, ProducerProfile, Product, User, db
 from werkzeug.security import generate_password_hash, check_password_hash
 from flask_login import LoginManager, login_user, login_required, logout_user, current_user
 
