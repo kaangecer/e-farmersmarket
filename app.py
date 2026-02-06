@@ -199,7 +199,8 @@ def login():
         if form.validate_on_submit():
             email = form.email.data.strip().lower() #get email from form
             user = User.query.filter_by(email=email).first() #check if user email exists
-            if user:
+            if user and user.role != "CUSTOMER":
+                form.email.errors.append("Dieser Login ist nur für Kunden. Bitte verwenden Sie den Business-Login.")
                 return redirect(url_for("login", step="password", email=email))
             else:
                 return redirect(url_for("login", step="signup", email=email))
@@ -223,9 +224,11 @@ def login():
             first_name = form.first_name.data
             last_name = form.last_name.data
             password = form.password.data
+            username = form.username.data.strip()
 
             user = User(
                 email=email,
+                username=username,
                 password_hash=generate_password_hash(password),
                 first_name=first_name,
                 last_name=last_name,
@@ -306,8 +309,10 @@ def business():
                 first_name=form.first_name.data,
                 last_name=form.last_name.data,
                 email=form.email.data.strip().lower(),
-                role="PRODUCER"
+                username=form.username.data.strip(),
+                role="PRODUCER",
             )
+
             user.set_password(form.password.data)
 
             db.session.add(user)
