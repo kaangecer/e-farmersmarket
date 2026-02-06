@@ -36,6 +36,23 @@ def products():
     categories = Category.query.all()
     return render_template("products.html", products=products, categories=categories)
 
+@app.route("/producer/<int:producer_id>/json")
+def producer_json(producer_id):
+    producer = ProducerProfile.query.get_or_404(producer_id)
+    addr = producer.address
+    return {
+        "display_name": producer.display_name,
+        "contact_email": producer.contact_email,
+        "address": f"{addr.street}, {addr.zip} {addr.city}, {addr.country}" if addr else "",
+    }
+
+
+@app.route("/producer/<int:producer_id>")
+def producer_detail(producer_id):
+    producer = ProducerProfile.query.get_or_404(producer_id)
+    return render_template("producer_details.html", producer=producer)
+
+
 @app.post("/cart/add-json")
 def add_to_cart_json():
     data = request.get_json(silent=True)
