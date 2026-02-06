@@ -127,6 +127,7 @@ def login():
             login_user(user) #remember loged in user
             return redirect(url_for("home"))
         return render_template("login.html", step="signup", email=email, form=form)
+    
     else:  # treat anything else as signup
         form = SignupForm()
         return render_template("login.html", step="signup", email=email, form=form)
