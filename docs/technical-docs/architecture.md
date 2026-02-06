@@ -33,6 +33,10 @@ nav_order: 1
 
 ## Overview
 
+FoodLoop is a web application that connects local farmers and food producers with nearby consumers, focusing on transparency, short supply chains, and reduced food waste. It provides a simple marketplace-like interface where producers can present their offerings and products and consumers can discover, compare, and plan their weekly grocery needs.
+
+The application follows a classic web architecture. HTTP requests hit a Flask backend that manages routing, business logic, and database access, while Jinja templates render HTML pages sent back to the browser. This seperation keep templates, Flask routes, forms, and database/models structured and seperated. Thus, new contributors can reason about changes in one layer at a time.
+
 [Give a high-level overview of what your app does and how it achieves it: similar to the value proposition, but targeted at a fellow developer who wishes to contribute.]
 
 ## Codemap
