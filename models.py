@@ -45,6 +45,7 @@ class CustomerProfile(db.Model):
 
     user = db.relationship("User", back_populates="customer_profile")
     address = db.relationship("Address", back_populates="customers")
+    orders = db.relationship("Order", back_populates="customer", lazy="dynamic")
 
 
 class ProducerProfile(db.Model):
@@ -127,8 +128,8 @@ class Order(db.Model):
     status = db.Column(db.String(20), nullable=False, default="pending")
     total_amount = db.Column(db.Numeric(10, 2), nullable=False)
 
-    customer = db.relationship("CustomerProfile", backref=db.backref("orders", lazy="dynamic"))
-    items = db.relationship("OrderItem", back_populates="order", cascade="all, delete-orphan", lazy="dynamic")
+    customer = db.relationship("CustomerProfile", back_populates="orders")
+    items = db.relationship("OrderItem", back_populates="order", cascade="all, delete-orphan")
 
 
 class OrderItem(db.Model):
