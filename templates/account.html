@@ -2,114 +2,149 @@
 {% block title %}Account{% endblock %}
 
 {% block content %}
-  <h1>Mein Konto</h1>
+<h1>Mein Konto</h1>
 
-  <p>Eingeloggt als: {{ session["user_email"] }}</p>
+<p>Eingeloggt als: {{ session["user_email"] }}</p>
 
-  <section class="account-section">
-    <h2>Persönliche Daten</h2>
-    <p><strong>Name:</strong> {{ user.first_name }} {{ user.last_name }}</p>
-    <p><strong>E-Mail:</strong> {{ user.email }}</p>
-    <p><strong>Konto angelegt am:</strong> {{ user.created_at.strftime("%d.%m.%Y") }}</p>
-  </section>
+<section class="account-section">
+  <h2>Persönliche Daten</h2>
+  <p><strong>Name:</strong> {{ user.first_name }} {{ user.last_name }}</p>
+  <p><strong>E-Mail:</strong> {{ user.email }}</p>
+  <p><strong>Konto angelegt am:</strong> {{ user.created_at.strftime("%d.%m.%Y") }}</p>
+</section>
 
-  <section class="account-section">
-    <h2>Standard-Lieferadresse</h2>
-    {% if address %}
-    <p class="mb-1">{{ address.street }}</p>
-    <p class="mb-1">{{ address.zip }}, {{ address.city }} </p>
-    <p class="mb-1">{{ address.country }}</p>
-    {% else %}
-    <p>Keine Adresse hinterlegt.</p>
-    {% endif %}
+<section class="account-section">
+  <h2>Standard-Lieferadresse</h2>
+  {% if address %}
+  <p class="mb-1">{{ address.street }}</p>
+  <p class="mb-1">{{ address.zip }}, {{ address.city }} </p>
+  <p class="mb-1">{{ address.country }}</p>
+  {% else %}
+  <p>Keine Adresse hinterlegt.</p>
+  {% endif %}
 
-    <button type="button" 
-            class="btn btn-primary" 
-            data-bs-toggle="modal" 
-            data-bs-target="#editAddressModal">
-          Adresse bearbeiten
-      </button>
-  </section>
+  <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#editAddressModal">
+    Adresse bearbeiten
+  </button>
+</section>
 
-  
-  {# HIER den Modal einfügen #}
-  <div class="modal fade" id="editAddressModal" tabindex="-1" aria-labelledby="editAddressModalLabel" aria-hidden="true">
-    <div class="modal-dialog">
-      <div class="modal-content">
-        <form method="post" action="{{ url_for('edit_address') }}">
+
+{# HIER den Modal einfügen #}
+<div class="modal fade" id="editAddressModal" tabindex="-1" aria-labelledby="editAddressModalLabel" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <form method="post" action="{{ url_for('edit_address') }}">
         <div class="modal-header">
           <h5 class="modal-title" id="editAddressModalLabel">Adresse bearbeiten</h5>
           <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
         </div>
         <div class="modal-body">
-         {{ form.csrf_token }}
+          {{ form.csrf_token }}
 
-            <div class="mb-3">
-              {{ form.street.label(class="form-label") }}
-              {{ form.street(class="form-control") }}
-              {% for error in form.street.errors %}
-                <div class="text-danger small">{{ error }}</div>
-              {% endfor %}
-            </div>
-
-            <div class="mb-3">
-              {{ form.zip.label(class="form-label") }}
-              {{ form.zip(class="form-control") }}
-              {% for error in form.zip.errors %}
-                <div class="text-danger small">{{ error }}</div>
-              {% endfor %}
-            </div>
-
-            <div class="mb-3">
-              {{ form.city.label(class="form-label") }}
-              {{ form.city(class="form-control") }}
-              {% for error in form.city.errors %}
-                <div class="text-danger small">{{ error }}</div>
-              {% endfor %}
-            </div>
-
-            <div class="mb-3">
-              {{ form.country.label(class="form-label") }}
-              {{ form.country(class="form-control") }}
-              {% for error in form.country.errors %}
-                <div class="text-danger small">{{ error }}</div>
-              {% endfor %}
-            </div>
+          <div class="mb-3">
+            {{ form.street.label(class="form-label") }}
+            {{ form.street(class="form-control") }}
+            {% for error in form.street.errors %}
+            <div class="text-danger small">{{ error }}</div>
+            {% endfor %}
           </div>
-          <div class="modal-footer">
-            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Abbrechen</button>
-            <button type="submit" class="btn btn-primary">
-              {{ form.submit.label.text }} </button>
+
+          <div class="mb-3">
+            {{ form.zip.label(class="form-label") }}
+            {{ form.zip(class="form-control") }}
+            {% for error in form.zip.errors %}
+            <div class="text-danger small">{{ error }}</div>
+            {% endfor %}
           </div>
-        </form>
-      </div>
+
+          <div class="mb-3">
+            {{ form.city.label(class="form-label") }}
+            {{ form.city(class="form-control") }}
+            {% for error in form.city.errors %}
+            <div class="text-danger small">{{ error }}</div>
+            {% endfor %}
+          </div>
+
+          <div class="mb-3">
+            {{ form.country.label(class="form-label") }}
+            {{ form.country(class="form-control") }}
+            {% for error in form.country.errors %}
+            <div class="text-danger small">{{ error }}</div>
+            {% endfor %}
+          </div>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Abbrechen</button>
+          <button type="submit" class="btn btn-primary">
+            {{ form.submit.label.text }} </button>
+        </div>
+      </form>
     </div>
   </div>
+</div>
 
-  <section class="account-section">
-    <h2>Bestellungen</h2>
-    {% if orders %}
-      <ul>
-        {% for order in orders %}
-          <li>
-            <strong>Bestellung #{{ order.id }}</strong> –
-            {{ order.created_at.strftime("%d.%m.%Y") }} –
-            Gesamt: {{ order.total }} €
-            <a href="{{ url_for('order_detail', order_id=order.id) }}">Details</a>
-          </li>
-        {% endfor %}
-      </ul>
-    {% else %}
-      <p>Du hast noch keine Bestellungen.</p>
-    {% endif %}
-  </section>
+<section class="account-section">
+  <h2>Bestellungen</h2>
+  {% if orders %}
+  <ul>
+    {% for order in orders %}
+    <li>
+      <button type="button" class="btn btn-secondary" data-bs-toggle="modal"
+        data-bs-target="#orderModal{{ order.order_id }}">
+        Bestellung #{{ order.order_id }}
+      </button>
+      – {{ order.created_at.strftime("%d.%m.%Y") }} –
+      Gesamt: {{ "%.2f"|format(order.total_amount) }} €
 
-  <form action="{{ url_for('logout') }}" method="post">
-    <button type="submit">Logout</button>
-  </form>
+      <!-- Order detail modal -->
+      <div class="modal fade" id="orderModal{{ order.order_id }}" tabindex="-1"
+        aria-labelledby="orderModalLabel{{ order.order_id }}" aria-hidden="true">
+        <div class="modal-dialog">
+          <div class="modal-content">
+            <div class="modal-header">
+              <h5 class="modal-title" id="orderModalLabel{{ order.order_id }}">
+                Bestellung #{{ order.order_id }}
+              </h5>
+              <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+              {% if order.items %}
+              <ul style="list-style:none; padding:0; margin:0 0 1rem 0;">
+                {% for item in order.items %}
+                <li style="margin-bottom:0.5rem;">
+                  <strong>{{ item.product.name }}</strong><br>
+                  {{ item.quantity }} × {{ "%.2f"|format(item.unit_price) }} €
+                  = {{ "%.2f"|format(item.line_total) }} €
+                </li>
+                {% endfor %}
+              </ul>
+              <p><strong>Gesamt:</strong> {{ "%.2f"|format(order.total_amount) }} €</p>
+              {% else %}
+              <p>Keine Artikel für diese Bestellung gefunden.</p>
+              {% endif %}
+            </div>
+            <div class="modal-footer">
+              <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">
+                Schließen
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </li>
+    {% endfor %}
+  </ul>
+  {% else %}
+  <p>Du hast noch keine Bestellungen.</p>
+  {% endif %}
+</section>
 
-  <form action="{{ url_for('delete_account') }}" method="post" style="margin-top: 1rem;" 
-      onsubmit="return confirm('Account unwiderruflich löschen?');">
+<form action="{{ url_for('logout') }}" method="post">
+  <button type="submit">Logout</button>
+</form>
+
+<form action="{{ url_for('delete_account') }}" method="post" style="margin-top: 1rem;"
+  onsubmit="return confirm('Account unwiderruflich löschen?');">
   <button type="submit" class="btn btn-danger">Account löschen</button>
 </form>
 
