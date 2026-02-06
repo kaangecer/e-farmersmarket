@@ -3,32 +3,27 @@ title: Home
 nav_order: 0
 ---
 
-{: .attention }
-> Any text enclosed by `[ ]` are placeholders, including the opening and closing brackets.
->
-> You may delete this `attention` box.
+# [Food Loop]
 
-# [Project Name]
-
-[Project description]
+[How FoodLoop creates a sustainable food network connecting local farmers/producers directly to consumers]
 
 ## Team members
 
-### [Jane Dane]
+### [Diego Jahndorf]
 
 About
-: Some info about Jane
+: Placeholder
 
 Matr.-Nr.
-: 1234567
+: Placeholder
 
-### [Joe Doe]
+### [Kaan Deniz Gecer]
 
 About
-: Some info about Joe
+: Placeholder
 
 Matr.-Nr.
-: 1234567
+: Placeholder
 
 ## Eidesstattliche Erklärung
 
