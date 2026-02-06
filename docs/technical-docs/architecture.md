@@ -43,16 +43,16 @@ The application follows a classic web architecture. HTTP requests hit a Flask ba
 
 The FoodLoop web application is organized around four main areas: the application entry point, forms, the data model (including initial data), and the UI layer.
 
-Application file (app.py)\
+Application file (app.py) \
 This is the central entry point of the web app. It creates and configures the Flask application instance, sets up the database connection, and registers all routes. In app.py, URLs are mapped to view functions that handle incoming HTTP requests, prepare data, and select which template to render.
 
-Forms (forms.py)\
+Forms (forms.py) \
 Forms encapsulate user input and validation logic for key interactions such as signing up, logging in, and creating or editing producer and product entries. Each form class defines the fields, validation rules, and error messages, so route functions can work with already-validated data instead of manually checking every field.
 
-Data model and initial data seeding (models.py, seed_data.py)\
+Data model and initial data seeding (models.py, seed_data.py) \
 The data model defines the core entities of FoodLoop (for example, users, producers, and products) and how they relate to each other. These model classes map to database tables and provide a structured way to query and update application data. Initial data seeding scripts populate the database with a basic set of users, producers, and products, allowing developers to start the app with realistic test data and making it easier to demo the core flows.
 
-UI (HTML templates and styling)\
+UI (HTML templates and styling) \
 The UI is built with Jinja-powered HTML templates and shared stylesheets. A base layout defines the common page frame (navigation, header, footer), while feature-specific templates render lists, details, and forms for different parts of the app. Styling is handled through CSS files in the static assets, giving the application a consistent look and feel across all pages.
 
 
