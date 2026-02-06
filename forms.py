@@ -40,6 +40,10 @@ class SignupForm(FlaskForm):
 
 class SignupFormProducers(FlaskForm):
     # User table data
+    username = StringField(
+        "Benutzername",
+        validators=[InputRequired("Bitte Benutzernamen eingeben."), Length(min=3, max=25, message="Benutzername muss zwischen 3 und 25 Zeichen lang sein.")],
+    )
     first_name = StringField(
         "Geschäftsführer Vorname",
         validators=[InputRequired(), Length(min=2, max=50)],

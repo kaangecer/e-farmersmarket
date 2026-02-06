@@ -311,16 +311,18 @@ def business():
     
     if step == "signup":
         form = SignupFormProducers()
+        if email and not form.email.data:
+            form.email.data = email
         if form.validate_on_submit():
+            signup_email = (form.email.data or email).strip().lower()
             user = User(
                 first_name=form.first_name.data,
                 last_name=form.last_name.data,
-                email=form.email.data.strip().lower(),
+                email=signup_email,
                 username=form.username.data.strip(),
                 role="PRODUCER",
+                password_hash=generate_password_hash(form.password.data),
             )
-
-            user.set_password(form.password.data)
 
             db.session.add(user)
             db.session.flush()

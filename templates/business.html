@@ -60,6 +60,7 @@
   
   <form method="POST" action="{{ url_for('business', step='signup', email=email) }}">
     {{ form.hidden_tag() }}
+    {{ form.email(type="hidden", value=email) }}
     
     <h3>Persönliche Daten</h3>
     <div class="form-row">
@@ -69,6 +70,10 @@
     <div class="form-row">
       {{ form.last_name.label }}
       {{ form.last_name(class_="form-control") }}
+    </div>
+    <div class="form-row">
+      {{ form.username.label }}
+      {{ form.username(class_="form-control") }}
     </div>
     <div class="form-row">
       {{ form.password.label }}
