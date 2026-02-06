@@ -47,6 +47,13 @@
                             Produzent anzeigen
                         </a>
                     </p>
+            <form class="inline-form add-to-cart-form" data-product-id="{{ p.product_id }}">
+                <input type="number" name="quantity" value="1" min="1" style="max-width:80px;">
+                <button type="button" class="btn btn-primary add-to-cart-btn">
+                    In den Warenkorb
+                </button>
+            </form>
+
                 </div>
             {% endfor %}
         {% else %}
@@ -56,4 +63,44 @@
         {% endif %}
     </div>
 </section>
+<script>
+    document.addEventListener("DOMContentLoaded", () => {
+        const forms = document.querySelectorAll(".add-to-cart-form");
+
+        forms.forEach(form => {
+            const button = form.querySelector(".add-to-cart-btn");
+            const qtyInput = form.querySelector('input[name="quantity"]');
+            const productId = form.dataset.productId;
+
+            button.addEventListener("click", async () => {
+                const quantity = parseInt(qtyInput.value || "1", 10);
+
+                try {
+                    const response = await fetch("{{ url_for('add_to_cart_json') }}", {
+                        method: "POST",
+                        headers: {
+                            "Content-Type": "application/json"
+                        },
+                        body: JSON.stringify({
+                            product_id: productId,
+                            quantity: quantity
+                        })
+                    });
+
+                    const data = await response.json();
+                    if (data.ok) {
+                        button.classList.add("btn-success-anim");
+                        button.textContent = "Hinzugefügt!";
+                        setTimeout(() => {
+                            button.classList.remove("btn-success-anim");
+                            button.textContent = "In den Warenkorb";
+                        }, 1000);
+                    }
+                } catch (e) {
+                    console.error(e);
+                }
+            });
+        });
+    });
+</script>
 {% endblock %}
