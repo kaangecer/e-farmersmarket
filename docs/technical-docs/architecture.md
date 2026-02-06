@@ -60,11 +60,13 @@ The UI is built with Jinja-powered HTML templates and shared stylesheets. A base
 
 ## Cross-cutting concerns
 
+This section describes anything that is important for a solid understanding of our codebase and its behaviour.
+
 Routing and request flow \
-Every browser request starts in app.py, where routes define what should happen for a given URL and HTTP method. \A typical request flow is: \the browser calls a route → the route creates/validates a form or reads query parameters → it talks to the data model to fetch or update records → it passes the result into a Jinja template, \which renders the final HTML page. Understanding this **request → route → model → template** chain is key for debugging and extending features.
+Every browser request starts in app.py, where routes define what should happen for a given URL and HTTP method. \ A typical request flow is: \ the browser calls a route → the route creates/validates a form or reads query parameters → it talks to the data model to fetch or update records → it passes the result into a Jinja template, \ which renders the final HTML page. Understanding this **request → route → model → template** chain is key for debugging and extending features.
 
 Forms and validation \
-User input is never trusted directly from request.form. Instead, forms encapsulate which fields exist and how they are validated (required, length, format, etc.). Routes call the form’s validation method and only proceed with database writes when validation passes. \This means that whenever you add a new interaction (like a new kind of submission or edit), you typically have to touch three spots: define or extend a form, update a route to use it, and adjust the template to render fields and show validation errors.
+User input is never trusted directly from request.form. Instead, forms encapsulate which fields exist and how they are validated (required, length, format, etc.). Routes call the form’s validation method and only proceed with database writes when validation passes. \ This means that whenever you add a new interaction (like a new kind of submission or edit), you typically have to touch three spots: define or extend a form, update a route to use it, and adjust the template to render fields and show validation errors.
 
 Authentication, authorization, and protected actions \
 Any route that exposes personalized or sensitive data—such as a producer editing their products or a user viewing their own information—depends on authentication and authorization checks. These checks live in decorators or helper functions but depend on data from the model (User.ROLE="customer" or "producer"). When adding new routes that read or modify data, it’s essential to ask *who is logged in?* and reuse the existing patterns so that security and functinoality is consistent across the app.
