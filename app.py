@@ -232,9 +232,6 @@ def login():
     
     if step == "signup":
         form = SignupForm()  # Customer-Signup
-        if email and not form.email.data:
-            form.email.data = email
-
         if form.validate_on_submit():
             signup_email = (form.email.data or email).strip().lower()
 

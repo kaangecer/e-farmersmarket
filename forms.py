@@ -6,9 +6,10 @@ class EmailOnlyLoginForm(FlaskForm):
     email = StringField(
         "E-Mail",
         validators=[
-            DataRequired(message="Bitte geben Sie Ihre E-Mail-Adresse ein."),
-            Email(message="Bitte geben Sie eine gültige E-Mail-Adresse ein."),
+            InputRequired("Bitte E‑Mail eingeben."),
+            Email("Bitte eine gültige E‑Mail-Adresse eingeben."),
         ],
+
     )
 
     submit = SubmitField("Weiter")
