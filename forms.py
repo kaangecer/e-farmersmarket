@@ -1,12 +1,16 @@
 from flask_wtf import FlaskForm
 from wtforms import BooleanField, DecimalField, StringField, SelectField, PasswordField, SubmitField, TextAreaField
-from wtforms.validators import InputRequired, Email, Length, EqualTo, Regexp, NumberRange
+from wtforms.validators import InputRequired, Email, Length, EqualTo, Regexp, NumberRange, DataRequired
 
 class EmailOnlyLoginForm(FlaskForm):
     email = StringField(
         "E-Mail",
-        validators=[InputRequired("Bitte E-Mail eingeben."), Email("Bitte gültige E-Mail eingeben.")]
+        validators=[
+            DataRequired(message="Bitte geben Sie Ihre E-Mail-Adresse ein."),
+            Email(message="Bitte geben Sie eine gültige E-Mail-Adresse ein."),
+        ],
     )
+
     submit = SubmitField("Weiter")
 
 class PasswordOnlyLoginForm(FlaskForm):
@@ -25,7 +29,7 @@ class SignupForm(FlaskForm):
         )
     username = StringField(
         "Benutzername",
-        validators=[InputRequired("Bitte Benutzernamen eingeben."), Length(min=3, max=25, message="Benutzername muss zwischen 3 und 25 Zeichen lang sein.")]
+        validators=[InputRequired("Bitte Benutzernamen eingeben."), Length(min=3, max=40, message="Benutzername muss zwischen 3 und 40 Zeichen lang sein.")]
     )
     password = PasswordField(
         "Passwort",
