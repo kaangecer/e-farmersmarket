@@ -106,7 +106,7 @@
       <a
         class="map-pin map-pin--{{ pin.color }}"
         style="left: {{ pin.x }}%; top: {{ pin.y }}%;"
-        href="{{ url_for('producers') }}"
+        href="{{ url_for('producer_detail', producer_id=pin.producer_id) }}"
         aria-label="{{ pin.label }}"
       >
         <span class="map-pin__dot"></span>
