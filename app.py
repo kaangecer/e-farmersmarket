@@ -1,4 +1,5 @@
 from decimal import Decimal
+import email
 import profile
 from flask import Flask, jsonify, redirect, render_template, request, session, url_for
 from forms import EditAddressForm, EditProducerProfileForm, EmailOnlyLoginForm , PasswordOnlyLoginForm, ProductForm, SignupForm, CartForm, SignupFormProducers
@@ -206,11 +207,11 @@ def login():
         if form.validate_on_submit():
             email = form.email.data.strip().lower() #get email from form
             user = User.query.filter_by(email=email).first() #check if user email exists
-            if user and user.role != "CUSTOMER":
-                form.email.errors.append("Dieser Login ist nur für Kunden. Bitte verwenden Sie den Business-Login.")
+            if user:
                 return redirect(url_for("login", step="password", email=email))
-            else:
+            else:            
                 return redirect(url_for("login", step="signup", email=email))
+            
         return render_template("login.html", step="email", email=email, form=form)
     
     if step == "password":
@@ -220,36 +221,48 @@ def login():
             user = User.query.filter_by(email=email).first() #find user by email, save in user variable
             if user and check_password_hash(user.password_hash, password):
                 login_user(user) #log user in if password matches
-                return redirect(url_for("home"))
+                # Nach Rolle weiterleiten
+                if user.role == "PRODUCER":
+                    return redirect(url_for("business_account"))
+                else:
+                    return redirect(url_for("account"))
             else:
                 form.password.errors.append("Falsches Passwort.")
         return render_template("login.html", step="password", email=email, form=form)
     
     if step == "signup":
-        form = SignupForm()
+        form = SignupForm()  # Customer-Signup
+        if email and not form.email.data:
+            form.email.data = email
+
         if form.validate_on_submit():
-            first_name = form.first_name.data
-            last_name = form.last_name.data
-            password = form.password.data
-            username = form.username.data.strip()
+            signup_email = (form.email.data or email).strip().lower()
+
+            # Sicherheit: existiert inzwischen jemand?
+            existing = User.query.filter_by(email=signup_email).first()
+            if existing:
+                # Jemand war schneller → nochmal Passwort-Step
+                return redirect(url_for("login", step="password", email=signup_email))
 
             user = User(
-                email=email,
-                username=username,
-                password_hash=generate_password_hash(password),
-                first_name=first_name,
-                last_name=last_name,
-                role="CUSTOMER"
+                first_name=form.first_name.data,
+                last_name=form.last_name.data,
+                email=signup_email,
+                username=form.username.data.strip(),
+                role="CUSTOMER",
+                password_hash=generate_password_hash(form.password.data),
             )
             db.session.add(user)
             db.session.commit()
 
-            customer_profile = CustomerProfile(user_id=user.id)
-            db.session.add(customer_profile)
-            db.session.commit()
+            # CustomerProfile anlegen falls du eins hast
+            # customer_profile = CustomerProfile(user_id=user.id)
+            # db.session.add(customer_profile)
+            # db.session.commit()
 
-            login_user(user) #remember loged in user
-            return redirect(url_for("home"))
+            login_user(user)
+            return redirect(url_for("account"))
+
         return render_template("login.html", step="signup", email=email, form=form)
     
     else:  # treat anything else as signup
@@ -286,12 +299,19 @@ def business():
     step = request.args.get("step", "landing")
     email = request.args.get("email", "").strip().lower()
 
+    if current_user.is_authenticated and current_user.role == "PRODUCER":
+        return redirect(url_for("business_account"))
+
     if step == "landing":
         form = EmailOnlyLoginForm()
         if form.validate_on_submit():
             email = form.email.data.strip().lower()
-            user = User.query.filter_by(email=email, role="PRODUCER").first()
+            user = User.query.filter_by(email=email).first()
+
             if user:
+                if user.role != "PRODUCER":
+                    form.email.errors.append("Dieser Login ist nur für Produzenten. Bitte verwenden Sie den Kunden-Login.")
+                    return render_template("business.html", step="landing", email=email, form=form)
                 return redirect(url_for("business", step="password", email=email))
             else:
                 return redirect(url_for("business", step="signup", email=email))
@@ -308,13 +328,20 @@ def business():
             else:
                 form.password.errors.append("Falsches Passwort.")
         return render_template("business.html", step="password", email=email, form=form)
-    
+
     if step == "signup":
         form = SignupFormProducers()
         if email and not form.email.data:
             form.email.data = email
+
         if form.validate_on_submit():
             signup_email = (form.email.data or email).strip().lower()
+
+            existing = User.query.filter_by(email=signup_email).first()
+            if existing:
+                # Falls Email plötzlich schon existiert → zurück zu /login Passwort
+                return redirect(url_for("login", step="password", email=signup_email))
+
             user = User(
                 first_name=form.first_name.data,
                 last_name=form.last_name.data,
@@ -323,7 +350,6 @@ def business():
                 role="PRODUCER",
                 password_hash=generate_password_hash(form.password.data),
             )
-
             db.session.add(user)
             db.session.flush()
 
@@ -350,11 +376,8 @@ def business():
 
             login_user(user)
             return redirect(url_for("business_account"))
-        
-        return render_template("business.html", step="signup", email=email, form=form)
-    # else:  # treat anything else as signup
-    #     form = SignupForm()
-    # return render_template("business.html", step="signup", email=email, form=form)
+
+    return render_template("business.html", step="signup", email=email, form=form)
 
 
 # business settings: Producer-Profil + Produkte anzeigen
