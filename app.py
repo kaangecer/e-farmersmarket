@@ -28,11 +28,11 @@ def load_user(user_id):
 @app.route("/")
 def home():
     map_pins = [
-        {"label": "Hof Mayer", "x": 30, "y": 36, "color": "green"},
-        {"label": "Kleins Garten", "x": 56, "y": 30, "color": "yellow"},
-        {"label": "Bio Eierhof Schulz", "x": 52, "y": 62, "color": "red"},
-        {"label": "Milchhof Bauer", "x": 68, "y": 48, "color": "green"},
-        {"label": "Metzgerei Huber", "x": 40, "y": 54, "color": "yellow"},
+        {"label": "Hof Mayer", "x": 30, "y": 36, "color": "green", "producer_id": 1},
+        {"label": "Kleins Garten", "x": 56, "y": 30, "color": "yellow", "producer_id": 2},
+        {"label": "Bio Eierhof Schulz", "x": 52, "y": 62, "color": "red", "producer_id": 3},
+        {"label": "Milchhof Bauer", "x": 68, "y": 48, "color": "green", "producer_id": 4},
+        {"label": "Metzgerei Huber", "x": 40, "y": 54, "color": "yellow", "producer_id": 5},
     ]
     return render_template("home.html", map_pins=map_pins)
 
