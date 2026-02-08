@@ -3,13 +3,13 @@ title: Home
 nav_order: 0
 ---
 
-# [Food Loop]
+# Food Loop
 
-[How FoodLoop creates a sustainable food network connecting local farmers/producers directly to consumers]
+How FoodLoop creates a sustainable food network connecting local farmers/producers directly to consumers
 
 ## Team members
 
-### [Diego Jahndorf]
+### Diego Jahndorf
 
 About
 : Placeholder
@@ -17,7 +17,7 @@ About
 Matr.-Nr.
 : Placeholder
 
-### [Kaan Deniz Gecer]
+### Kaan Deniz Gecer
 
 About
 : Placeholder
