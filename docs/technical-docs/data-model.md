@@ -19,7 +19,7 @@ nav_order: 2
 
 ## Visual overview
 
-![Data model diagram](/assets/images/data_model.png)
+![Data model diagram](../assets/images/data_model.png)
 
 ## user
 
