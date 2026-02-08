@@ -11,19 +11,13 @@ How FoodLoop creates a sustainable food network connecting local farmers/produce
 
 ### Diego Jahndorf
 
-About
-: Placeholder
-
 Matr.-Nr.
-: Placeholder
+: 77206591775
 
 ### Kaan Deniz Gecer
 
-About
-: Placeholder
-
 Matr.-Nr.
-: Placeholder
+: 77204690208
 
 ## Eidesstattliche Erklärung
 

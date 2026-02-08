@@ -23,9 +23,7 @@ FoodLoop is a web application that connects local farmers and food producers wit
 
 The application follows a classic web architecture. HTTP requests hit a Flask backend that manages routing, business logic, and database access, while Jinja templates render HTML pages sent back to the browser. This seperation keep templates, Flask routes, forms, and database/models structured and seperated. Thus, new contributors can reason about changes in one layer at a time.
 
-[Give a high-level overview of what your app does and how it achieves it: similar to the value proposition, but targeted at a fellow developer who wishes to contribute.]
-
---- 
+---
 
 ## Codemap
 
@@ -43,9 +41,6 @@ The data model defines the core entities of FoodLoop (for example, users, produc
 ### UI (HTML templates and styling) 
 The UI is built with Jinja-powered HTML templates and shared stylesheets. A base layout defines the common page frame (navigation, header, footer), while feature-specific templates render lists, details, and forms for different parts of the app. Styling is handled through CSS files in the static assets, giving the application a consistent look and feel across all pages.
 
-
-[Describe how your app is structured. Don't aim for completeness, rather describe *just* the most important parts.]
-
 --- 
 
 ## Cross-cutting concerns
@@ -61,7 +56,3 @@ User input is never trusted directly from request.form. Instead, forms encapsula
 ### Authentication, authorization, and protected actions 
 Any route that exposes personalized or sensitive data—such as a producer editing their products or a user viewing their own information—depends on authentication and authorization checks. These checks live in decorators or helper functions but depend on data from the model (User.ROLE="customer" or "producer"). When adding new routes that read or modify data, it’s essential to ask *who is logged in?* and reuse the existing patterns so that security and functinoality is consistent across the app.
 
-
-
-
-[Describe anything that is important for a solid understanding of your codebase. Most likely, you want to explain the behavior of (parts of) your application. In this section, you may also link to important [design decisions](../design-decisions.md).]

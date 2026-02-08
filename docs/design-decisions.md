@@ -53,13 +53,10 @@ Because these tools and technologies are mandated, we did not evaluate alternati
 - Other backend frameworks (e.g., FastAPI, Django, Node.js).  
 - Client-side JavaScript frameworks (e.g., React, Vue, Angular).  
 - Cloud-hosted or NoSQL databases (e.g., Firebase, remote PostgreSQL, MongoDB).  
-- Containerization or virtualization (e.g., Docker, virtual machines).  
 
 ---
 
-## Technical design decisions
-
-### 01: Authentication Flow
+## 01: Authentication Flow
 
 ### Meta
 
@@ -115,9 +112,7 @@ This architecture keeps the URL surface small but expressive, ensures that produ
 
 ---
 
-## Product and business decisions
-
-### 01: USP – Local Producer Marketplace with Producer-Managed Inventory
+## 02: USP – Local Producer Marketplace with Producer-Managed Inventory
 
 ### Meta
 
@@ -169,7 +164,7 @@ We define our USP as a local producer marketplace where real producers manage th
 
 ---
 
-### 02: Map-Based Producer Discovery on the Landing Page
+## 03: Map-Based Producer Discovery on the Landing Page
 
 ### Meta
 
