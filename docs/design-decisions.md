@@ -139,7 +139,7 @@ We define our USP as a local producer marketplace where real producers manage th
 
 - Producers get a business area (`/business`, `/business/account`) where they can log in, maintain a profile, and manage their own products (create, edit, activate/deactivate).  
 - Customers see a product overview (`/products`) and a producer overview (`/producers`, `/producer/<id>`) that highlight who is behind the products, not just the items themselves.  
-- Orders are tied to both the customer (`Order.customer_id`) and the producer (`OrderItem.producer_id`), enabling producer-centric workflows (e.g. future per-producer order views).  
+- Orders are tied to both the customer (`Order.customer_id`) and the producer (`OrderItem.producer_id`), enabling producer-centric workflows.  
 - The architecture (separate producer/customer roles, profile tables, product ownership, order structure) is chosen specifically to support this USP: the site is not a generic one-sided shop but a small marketplace emphasizing producers and their offerings.
 
 ### Regarded options
@@ -166,6 +166,59 @@ We define our USP as a local producer marketplace where real producers manage th
 - Cons:  
   - Higher implementation effort (more routes, forms, and templates).  
   - Requires careful design of role-specific flows and permissions.  
+
+---
+
+### 02: Map-Based Producer Discovery on the Landing Page
+
+### Meta
+
+Status  
+: Decided  
+
+Updated  
+: 08-Feb-2026  
+
+### Problem statement
+
+To support our USP of a local producer marketplace, the landing page should not feel like a generic product grid. We want new visitors to immediately see *where* producers are located and that they are real, nearby farms or businesses. We therefore need to decide whether to invest in a map-based landing page or use a simpler list-only view.
+
+### Decision
+
+This is a **Product and business decision**.
+
+We place a **map-based producer overview on the homepage** to make producer discoverability and transparency a central part of the experience:
+
+- The landing page (`/`) renders a simple map visualization with clickable pins representing producers (e.g. “Hof Mayer”, “Kleins Garten”), using preconfigured coordinates.  
+- Each pin links into producer-specific pages (e.g. `/producer/<id>`), where users can see more details and associated products.  
+- The goal is that users first discover **producers on a map**, then drill down into their product offerings. This visually underlines the idea of local, real producers instead of an anonymous online shop.
+
+The map view complements the `/producers` and `/producer/<id>` pages and directly supports the USP of transparency and local discoverability rather than only showing abstract product cards.
+
+### Regarded options
+
+**Text/list-based landing page without map**
+
+- A simple homepage listing featured products or producers in a vertical list.  
+- Pros: Easier to implement, less layout work, fewer visual elements.  
+- Cons: Does not visually communicate locality; looks similar to any other shop; weaker support for our USP.
+
+**Product-focused landing page**
+
+- Homepage shows only products (e.g. “new” or “popular”), producers are secondary.  
+- Pros: Strong for conversion in a classic e‑commerce scenario.  
+- Cons: Shifts attention away from producers; contradicts the idea that producers are first‑class citizens.
+
+**Chosen approach: map-based producer discovery on the homepage**
+
+- Producers are exposed via a map view with pins directly on `/`.  
+- Pros:  
+  - Immediately signals “local producers” and transparency.  
+  - Encourages exploration by location, fitting the farmers‑market theme.  
+  - Visually distinguishes the app from generic online supermarkets.  
+- Cons:  
+  - Requires extra layout work and careful placement of pins.  
+  - Currently based on static coordinates; real geo-integration would be more complex.
 
 ---
 
