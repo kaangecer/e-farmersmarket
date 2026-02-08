@@ -37,12 +37,48 @@ def home():
     ]
     return render_template("home.html", map_pins=map_pins)
 
-# produkte seite: aktive Produkte + Kategorien anzeigen
 @app.route("/products")
 def products():
-    products = Product.query.filter_by(is_active=True).all()
+    # read filters from query string
+    current_query = request.args.get("q", "").strip()
+    current_zip = request.args.get("zip", "").strip()
+    current_category = request.args.get("category", "").strip()
+
+    # base query: only active products
+    query = Product.query.filter_by(is_active=True)
+
+    # name search
+    if current_query:
+        query = query.filter(Product.name.ilike(f"%{current_query}%"))
+
+    # filter by producer ZIP (via address)
+    if current_zip:
+        query = (
+            query
+            .join(Product.producer)          # Product -> ProducerProfile
+            .join(ProducerProfile.address)   # ProducerProfile -> Address
+            .filter(Address.zip == current_zip)
+        )
+
+    # filter by category name
+    if current_category:
+        query = (
+            query
+            .join(Product.category)          # Product -> Category
+            .filter(Category.name == current_category)
+        )
+
+    products = query.all()
     categories = Category.query.all()
-    return render_template("products.html", products=products, categories=categories)
+
+    return render_template(
+        "products.html",
+        products=products,
+        categories=categories,
+        current_query=current_query,
+        current_zip=current_zip,
+        current_category=current_category,
+    )
 
 @app.route("/producer/<int:producer_id>/json")
 def producer_json(producer_id):

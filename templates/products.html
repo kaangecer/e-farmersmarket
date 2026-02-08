@@ -21,10 +21,6 @@
                 </option>
                 {% endfor %}
             </select>
-            <label>
-                <input type="checkbox" name="bio" {% if current_bio %}checked{% endif %}>
-                Nur Bio
-            </label>
             <button class="btn btn-primary" type="submit">Filtern</button>
             <a href="{{ url_for('products') }}" class="btn btn-secondary">Zurücksetzen</a>
         </form>
@@ -37,7 +33,7 @@
             <h3>{{ p.name }}</h3>
             <p><strong>Kategorie:</strong> {{ p.category.name }}</p>
             <p><strong>Preis:</strong> {{ "%.2f"|format(p.price) }} €</p>
-            <p><strong>PLZ:</strong> {{ p.zip }}</p>
+            <p><strong>PLZ:</strong> {{ p.producer.address.zip if p.producer and p.producer.address else "-" }}</p>
             <p><strong>Bio:</strong> {{ "Ja" if p.bio else "Nein" }}</p>
             <p style="margin-top:0.5rem;">
                 <button
