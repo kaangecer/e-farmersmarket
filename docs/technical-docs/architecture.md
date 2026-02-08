@@ -5,7 +5,7 @@ nav_order: 1
 ---
 
 {: .label }
-[Jane Dane]
+[Kaan Deniz Gecer]
 
 {: .no_toc }
 # Architecture

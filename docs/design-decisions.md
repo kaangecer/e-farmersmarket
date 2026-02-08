@@ -4,7 +4,7 @@ nav_order: 3
 ---
 
 {: .label }
-[Jane Dane]
+[Kaan Deniz Gecer]
 
 {: .no_toc }
 # Design decisions
@@ -19,17 +19,17 @@ nav_order: 3
 --- 
 ## Mandatory Technologies Defined by Course
 
-#### Meta
+### Meta
 Status
 : Decided (external constraint)
 
 Updated
 : 08-Feb-2026
 
-#### Problem statement
+### Problem statement
 Certain core technologies for the semester project are predefined by the course rules and therefore not subject to our own architectural choice. These constraints must be documented explicitly so that one does not confuse them with design decisions taken by the team.
 
-#### Decision
+### Decision
 We acknowledge that the following technologies are mandatory by course definition and therefore excluded from our design space:
 ​
 Programming language: Python.
@@ -48,7 +48,7 @@ Infrastructure: All components must run natively on current Windows or macOS; Do
 
 These items are treated as given constraints, not as design decisions by the team.
 
-#### Regarded options
+### Regarded options
 Because these tools and technologies are mandated, we did not evaluate alternatives such as:
 
 ---
