@@ -90,3 +90,15 @@ We regarded two alternative options:
 | **Switch DB engine** | ❌ Different SQL dialect | ✔️ Abstracts away DB engine |
 
 ---
+
+## Architectural design decisions
+
+---
+
+## Product and business decisions
+
+---
+
+## Operational and data design decisions
+
+---
