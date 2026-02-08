@@ -5,7 +5,7 @@ nav_order: 2
 ---
 
 {: .label }
-[]
+[Kaan Deniz Gecer]
 
 {: .no_toc }
 # Data model
