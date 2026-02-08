@@ -16,3 +16,13 @@ nav_order: 2
 + ToC
 {: toc }
 </details>
+
+## Kommunikation & Planung
+- Früher eine klare Aufgabenliste festlegen (wer macht was, bis wann).
+- Größere Änderungen vorher kurz abstimmen, damit nicht beide dieselben Dateien gleichzeitig ändern.
+
+## Testing & Debugging
+- Frühzeitig mit “Test-Usern” testen, um Probleme zu erkennen.
+- Eine kleine Checkliste erstellen (mit den wichtigsten Funktionen)
+
+---

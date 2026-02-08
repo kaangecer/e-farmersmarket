@@ -1,11 +1,8 @@
 ---
-title: Contributions
+title: Summary of individual contributions
 parent: Team Evaluation
 nav_order: 4
 ---
-
-{: .label }
-[Diego Jahndorf]
 
 {: .no_toc }
 # Summary of individual contributions
@@ -17,16 +14,23 @@ nav_order: 4
 {: toc }
 </details>
 
-## [Jane Dane]
+## Diego Jahndorf
+### Contributions
+- **Homepage: Design + Inhalt + statische Berlin-Map mit Pins**
+  - home.html (Hero, Sections, Map-Preview, Produzenten-Pins, CTA)
+  - home.css (Layout, Typo, Hero-Design, Map-Preview, Pins, Responsive)
+  - app.py (Homepage-Route mit map_pins Datenquelle)
 
-Contributions
-: Lorem ipsum dolor
-: Consetetur sadipscing elitr
-: ...
+- **Produzentenprofil + Funktionen (weiterentwickelt / vervollständigt)**
+  - business_account.html (Producer-Dashboard: Profilinfos, Produkte-Liste, Bestellungen)
+  - edit_producer_profile.html (Profil bearbeiten)
+  - edit_address.html (Adresse bearbeiten)
+  - product_form.html (Produkt anlegen/bearbeiten)
+  - forms.py (Erweiterungen/Anpassungen für Producer-Forms, z. B. SignupFormProducers, ProductForm mit Kategorie)
+  - app.py (Business-Routes, Producer-Login/Signup-Flow, Produkt anlegen/bearbeiten, Address/Profile-Edit)
 
-## [Joe Doe]
-
-Contributions
-: Diam nonumy eirmod
-: Tempor invidunt ut labore
-: ...
+- **Seiten „Produzenten“ und „Produkte“ (Bearbeitung/Erweiterung)**
+  - producers.html (Produzenten-Übersicht)
+  - producer_details.html (Detailseite Produzent)
+  - products.html (Produkt-Übersicht)
+  - app.py (Routes für producers, producer_detail, products)
