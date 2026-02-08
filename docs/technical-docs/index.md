@@ -5,6 +5,7 @@ nav_order: 2
 ---
 
 {: .label }
-[Jane Dane]
+[Kaan Deniz Gecer]
+[Diego Jahndorf]
 
 # Technical documentation
