@@ -7,16 +7,6 @@ nav_order: 1
 {: .label }
 [Diego Jahndorf]
 
-{: .no_toc }
-# Goals achieved and missed
-
-<details open markdown="block">
-{: .text-delta }
-<summary>Table of contents</summary>
-+ ToC
-{: toc }
-</details>
-
 # Goals achieved and missed
 
 ## Überblick
