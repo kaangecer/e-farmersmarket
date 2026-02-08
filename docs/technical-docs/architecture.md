@@ -38,7 +38,9 @@ FoodLoop is a web application that connects local farmers and food producers wit
 The application follows a classic web architecture. HTTP requests hit a Flask backend that manages routing, business logic, and database access, while Jinja templates render HTML pages sent back to the browser. This seperation keep templates, Flask routes, forms, and database/models structured and seperated. Thus, new contributors can reason about changes in one layer at a time.
 
 [Give a high-level overview of what your app does and how it achieves it: similar to the value proposition, but targeted at a fellow developer who wishes to contribute.]
+
 --- 
+
 ## Codemap
 
 The FoodLoop web application is organized around four main areas: the application entry point, forms, the data model (including initial data), and the UI layer.
@@ -57,7 +59,9 @@ The UI is built with Jinja-powered HTML templates and shared stylesheets. A base
 
 
 [Describe how your app is structured. Don't aim for completeness, rather describe *just* the most important parts.]
+
 --- 
+
 ## Cross-cutting concerns
 
 This section describes anything that is important for a solid understanding of our codebase and its behaviour.
